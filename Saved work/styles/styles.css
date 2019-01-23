@@ -1,0 +1,128 @@
+/*background #2dede0
+	DarkBackground: #0a4440
+	Accent: #efefe1
+*/
+
+.topnav{
+	background-color: #111111;
+	overflow: hidden;
+}
+
+.topnav button {
+	float: left;
+	background-color: inherit;
+	outline: none;
+	border: none;
+	transition: 0.2s;
+	color: #f2f2f2;
+	text-align: center;
+	font-size: 18px;
+	padding: 20px 14px;
+	text-decoration: none;
+}
+
+.topnav button:hover {
+	background-color: #efefe1;
+	color: #111111;
+}
+
+.sticky{
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 25px;
+}
+
+body{
+	background-color: #222222;
+	color: #d3d3d3;
+	padding: 0px;
+	margin: 0px;
+	height: 134vh;
+
+}
+
+.intro{
+	color: #cecece;
+	font-size: 30px;
+	text-align: center;
+	font-family: 'Libre Baskerville', serif;
+	margin-top: 80px;
+}
+
+.pagesIntro{
+	color: #cecece;
+	font-size: 50px;
+	text-align: center;
+	font-family: 'Libre Baskerville', serif;
+	margin-top: 80px;
+}
+
+h1{
+	margin: 20px;
+}
+
+.intro h2{
+	font-size: 30px;
+}
+
+.bio{
+	position: absolute;
+	width:60%;
+	top: 105vh;
+	left: 20%;
+	font-size: 20px;
+	text-indent: 30px;
+	line-height: 140%;
+}
+
+.pages{
+
+}
+
+.expandButton{
+	width: 300px;
+	background-color: Transparent;
+	font-size: 30px;
+	color: #f2f2f2;
+	margin-left:10%;
+	margin-right:10%;
+}
+
+.expandables{
+	display: inline-block;
+	width: 296px;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: solid;
+	border-color: #f2f2f2;
+	margin-left:10%;
+	margin-right:10%;
+	margin-top: 0;
+}
+
+.linkCenter{
+	color: #FFFFFF;
+}
+
+.doubleImages{
+	text-align: center;
+	width:300px;
+	height:300px;
+	margin-left:10%;
+	margin-right:10%;
+	margin-top:60px;
+}
+
+.contactInfo{
+	display: inline-block;
+	margin-bottom:10px;
+	color: #d3d3d3;
+	font-size: 30px;
+}

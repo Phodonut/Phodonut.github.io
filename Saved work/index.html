@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<title>Richard Harker</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" type = "text/css" href="styles/styles.css">
+<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+<body>
+  <div id="nav" class="topnav">
+    <button onclick="openAbout()"> About Me </button>
+    <button onclick="openPreviousWorks()"> Previous Works </button>
+    <button onclick="openResume()"> Resume </button>
+    <button onclick="openContact()"> Contact </button>
+  </div>
+
+  <div id="About" class="pages">
+    <header>
+      <div class="intro">
+        <img src="images/MeAsIcon2.png" style="centered;width:250px;height:250px;" class="center">
+        <h1> Richard Harker </h1>
+        <h2> Technical Artist </h2>
+        <h2> &darr; </h2>
+      </div>
+    </header>
+
+    <section class="bio">
+      <p>Hello! I'm a motion enthused technical artist who recently graduated from UCSC.
+      <br> I gravitate towards work that has a technical beauty to it, be it as visually intensive as a spiraling tornado or frameworks such as smooth player motion. I've got a strong background in programming from my studies, and my hobby of photography has molded me into a sturdy bridge between coder and artist.</p>
+    </section>
+  </div>
+
+  <div id="PreviousWorks" class="pages" style="display:none">
+      <h1 class="pagesIntro">Projects</h1>
+      <img src="images/Shroommates_Crew2.png" style="width:500px;height:376;margin-top:60px;" class="center">
+      <br>
+      <div style="text-align:center;">
+        <button id="game_main" onclick="expandContent(this.id)" href="http://playshroommates.com/" class="expandButton">&darr; Shroommates &darr;</button>
+      </div>
+      <div style="text-align:center;">
+        <div class="expandables" id="game_main_expanded" style="display:none;">
+          <p style="text-align:center;">Shroommates is a third-person platformer where players play as a sentient mushroom trying to save their family from an untimely demise at the hands of the 'Tall Ones'. My main role on the team was programming the camera hangling as well as anything involving the engine side of animations.</p>
+          <br>
+          <a href="http://playshroommates.com/" class="linkCenter" target="_blank"> View the website here! </a>
+          <p></p>
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <img src="images/Reef_Framed.png" class="doubleImages">
+        <img src="images/Tornado_Framed.png" class="doubleImages">
+      </div>
+
+      <div style="text-align:center;">
+        <button id="game_second" onclick="expandContent(this.id)" class="expandButton">&darr; Symbiosis &darr;</button>
+        <button id="game_third" onclick="expandContent(this.id)" class="expandButton">&darr; Tornado Ridge &darr;</button>
+        <p class="expandables" id="game_second_placeholder" style="display:inline-block;visibility:hidden;"></p>
+        <p class="expandables" id="game_second_expanded" style="display:none;"> <br>Symbiosis is a game created by a group of 4 students trying to bring attention to the bleaching and death of the coral reefs through pained gameplay. My role in the project was creating the dynamic reef that serves as the background and playing field of the game, a procedural particle system as landscape. <a href="https://github.com/nullP01nterException/cm120-project" class="linkCenter" target="_blank"> <br><br> View the project here! <br><br> </a></p>
+        <p class="expandables" id="game_third_expanded" style="display:none;"> <br>Tornado Ridge was a solo project made in a week, an endless runner where the player is a tornado rampaging on a precarious ridge, dodging clouds formations that would disrupt the player. The most challenging part of this build would be the bezier curve, as it controls the tornado also visually and functionally. <a href="https://jsfiddle.net/rharker/rs7xkwvm/show" class="linkCenter" target="_blank"> <br><br> View the project here! <br><br> </a></p>
+        <p class="expandables" id="game_third_placeholder" style="display:inline-block;visibility:hidden;"></p>
+        <div style="visibility:hidden;height:100px">
+        </div>
+      </div>
+  </div>
+
+  <div id="Resume" class="pages" style="display:none;text-align:center;">
+    <h1 class="pagesIntro">Resume</h1>
+
+    <object data="images/Resume.pdf" type="application/pdf" width="600" height="660">
+      <a href="iamges/Resume.pdf">Resume.pdf</a>
+    </object>
+      <div style="visibility:hidden;height:100px">
+      </div>
+  </div>
+
+  <div id="Contact" class="pages"style="display:none">
+    <h1 class="pagesIntro"> Contact</h1>
+  <div style="margin-left: 35%;">
+    <p style="margin-top:100px;"></p>
+    <p class="contactInfo">Email:</p> <p class="contactInfo" style="margin-left: 48px;">Rharker7@gmail.com</p>
+    <br>
+    <p class="contactInfo">LinkedIn:</p> <a href="https://www.linkedin.com/in/richard-harker
+" class="contactInfo" style="margin-left: 12px;" target="_blank">Profile</a>
+    <br>
+    <p class="contactInfo">Github:</p> <a href="https://github.com/Phodonut" class="contactInfo" style="margin-left: 42px;" target="_blank">https://github.com/Phodonut</a>
+  </div>
+  </div>
+
+  <footer>
+  </footer>
+
+  <script src="scripts/main.js"> </script>
+
+</body>
+</html>
