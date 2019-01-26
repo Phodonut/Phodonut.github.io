@@ -259,7 +259,7 @@ function newRow(amount){
 		div.appendChild(indiv[i]);
 		image[i] = document.createElement('img');
 		image[i].setAttribute("class", "RowIMG");
-		image[i].src = "images/" + imgArray[(i+4*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
+		image[i].src = "images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
 		//console.log(imgRowCounter);
 		indiv[i].appendChild(image[i]);
 		vignette[i] = document.createElement('div');
