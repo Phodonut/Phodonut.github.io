@@ -36,6 +36,22 @@ function openContact(){
 
 }
 
+function openHome(){
+	if(screen.width <= screen.height){
+		window.location.href = "./index.html"; // eventually do a toggle here that mimicks on hover for mobile
+	}else {
+		window.location.href = "./index.html";
+	}
+}
+
+function openPhotography(){
+	if(screen.width <= screen.height){
+		window.location.href = "../photography.html"; // eventually do a toggle here that mimicks on hover for mobile
+	}else {
+		window.location.href = "../photography.html";
+	}
+}
+
 function scrollTop(){
 	document.body.scrollTop=0;
 	document.documentElement.scrollTop=0;
