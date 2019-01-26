@@ -106,8 +106,8 @@
 body{
 	background-color: #efefe1;
 	color: #d3d3d3;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	padding: 0px;
 	margin: 0px;
 	overflow: hidden;  /* disables scrolling */
@@ -289,7 +289,9 @@ least to not care? Idk, but problem is there; */
 }
 
 .RowIMG{
+	height: 100%;
 	width: 100%;
+	object-fit: cover;
 	position: absolute;
     top: 50%;
     transform: translateY(-50%);

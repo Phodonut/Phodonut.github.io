@@ -253,11 +253,13 @@ function newRow(amount){
 		image[i] = document.createElement('img');
 		image[i].setAttribute("class", "RowIMG");
 		image[i].src = "images/" + imgArray[(i+4*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
-		console.log(imgRowCounter);
+		//console.log(imgRowCounter);
 		indiv[i].appendChild(image[i]);
 		vignette[i] = document.createElement('div');
 		vignette[i].setAttribute("class", "vignette");
 		indiv[i].appendChild(vignette[i]);
+		//console.log("width: " + image[i].width);
+		//console.log("height: " + image[i].height);
 
 		//console.log(i);
 	}
