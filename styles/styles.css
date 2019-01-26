@@ -1,3 +1,7 @@
+html, body{
+  overflow: hidden;
+}
+
 .topnav{
 	background-color: #111111;
 	overflow: hidden;
@@ -104,6 +108,7 @@
 }
 
 body{
+	position: relative;
 	background-color: #efefe1;
 	color: #d3d3d3;
 	width: 100vw;
