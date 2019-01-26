@@ -314,8 +314,6 @@ least to not care? Idk, but problem is there; */
 	width:91vw;
 	height:90vh;
 	background-color: rgba(0, 0, 0, 0.5);
-
-
 }
 
 .imgFull{
@@ -326,6 +324,15 @@ least to not care? Idk, but problem is there; */
     left: 0px;
     padding-top: 2%;
     padding-bottom: 2%;
+}
+
+.imgFullMobile{
+	position: relative;
+	margin: auto;
+	float: left;
+	width: 90%;
+    padding-top: 30%;
+    padding-bottom: 5%;
 }
 
 .imgDescriptionContainer{

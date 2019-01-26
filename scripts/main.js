@@ -237,12 +237,11 @@ function newRow(amount){
 		return;
 	}
 
-	//console.log(screen.width);
-	if (screen.width < screen.height){
-		console.log("mobile mode engaged");
+
+	if (screen.width < screen.height){ //mobile friendly ish
 		columns = 2;
 	}
-	//console.log("At bottom, New Div!!");
+
 	var container = document.getElementById("PortraitContainer");
 	var div = document.createElement('div');
 	div.setAttribute("class", "PhotoRowDiv");
@@ -292,6 +291,10 @@ function imageArraySetup(){
 var imageCounter = 0;
 function imgFullscreen(div){   //this works for horizontal setup, not scalable for mobile. If VH > VW, create other function
 	//Refactoring source from the low quality to the highquality
+	var mobile = false;
+	if (screen.width <= screen.height){
+		mobile = true;
+	}
 	var imgSource = div.getElementsByTagName('img')[0].src;
 	imgSource = imgSource.slice(0, -4);
 	nextImageSource = (imgSource + "_" + 2 + ".jpg");
@@ -307,9 +310,11 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	darkenOut.setAttribute("onclick", "deleteFullscreen()");
 	fullscreenDiv.appendChild(darkenOut);
 
-	var arrowContainerL = document.createElement('div');
-	arrowContainerL.setAttribute("class", "arrowContainerL");
-	fullscreenDiv.appendChild(arrowContainerL);
+	if (mobile == false){
+		var arrowContainerL = document.createElement('div');
+		arrowContainerL.setAttribute("class", "arrowContainerL");
+		fullscreenDiv.appendChild(arrowContainerL);
+	}
 
 	//var arrowL = document.createElement('button');
 	//arrowL.setAttribute("class", "arrows");
@@ -317,28 +322,34 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	//arrowContainerL.appendChild(arrowL);
 
 	var imgFull = document.createElement('img');
-	imgFull.setAttribute("class", "imgFull");
+	if (screen.width <= screen.height){
+		imgFull.setAttribute("class", "imgFullMobile");
+	}else{
+		imgFull.setAttribute("class", "imgFull");
+	}
 	imgFull.src = imgSource;
 	fullscreenDiv.appendChild(imgFull);
 
-	var arrowContainerR = document.createElement('div');
-	arrowContainerR.setAttribute("class", "arrowContainerR");
-	fullscreenDiv.appendChild(arrowContainerR);
+	if(mobile == false){
+		var arrowContainerR = document.createElement('div');
+		arrowContainerR.setAttribute("class", "arrowContainerR");
+		fullscreenDiv.appendChild(arrowContainerR);
 
-	var arrowR = document.createElement('button');
-	arrowR.setAttribute("class", "arrows");
-	arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
-	arrowR.innerText = ">";
-	arrowContainerR.appendChild(arrowR);
+		var arrowR = document.createElement('button');
+		arrowR.setAttribute("class", "arrows");
+		arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
+		arrowR.innerText = ">";
+		arrowContainerR.appendChild(arrowR);
+
+		var description = document.createElement('h1');
+		description.setAttribute("class", "imgDescription");
+		description.innerText = "testing";
+		fullscreenDiv.appendChild(description);
+	}
 
 	//var descriptionContainer = document.createElement('div');
 	//descriptionContainer.setAttribute("class","imgDescriptionContainer");
 	//fullscreenDiv.appendChild(descriptionContainer);
-
-	var description = document.createElement('h1');
-	description.setAttribute("class", "imgDescription");
-	description.innerText = "testing";
-	fullscreenDiv.appendChild(description);
 
 	checkImageBeyond(imgSource, nextImageSource, fullscreenDiv);
 
@@ -417,7 +428,7 @@ var noRightArrow = false;
 function checkImageBeyond(imageSrc, nextSrc, containingDiv){
 	var img = new Image();
 
-	containingDiv.childNodes[2].src = imageSrc;
+	containingDiv.childNodes[2].src = imageSrc; // fails on mobile for now due to lack of arrow divs, can manually change later
 
 	img.onerror = function(){
 		//console.log("isn't valid");
