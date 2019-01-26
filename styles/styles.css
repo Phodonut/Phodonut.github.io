@@ -12,7 +12,7 @@
 	color: #f2f2f2;
 	text-align: center;
 	font-size: 18px;
-	padding: 20px 34px 20px 14px;
+	padding: 20px calc(8px + 2vw) 20px 14px;
 	text-decoration: none;
 }
 
