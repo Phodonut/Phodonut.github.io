@@ -232,8 +232,15 @@ function newRowCheck(){
 }
 // Below is code for the portrait section or generic photo wall implementation
 function newRow(amount){
+	var columns = 4;
 	if(amount == 0){
 		return;
+	}
+
+	//console.log(screen.width);
+	if (screen.width < screen.height){
+		console.log("mobile mode engaged");
+		columns = 2;
 	}
 	//console.log("At bottom, New Div!!");
 	var container = document.getElementById("PortraitContainer");
@@ -245,7 +252,7 @@ function newRow(amount){
 	var indiv = [];
 	var image = [];
 	var vignette = [];
-	for(i = 1; i < 5; i++){
+	for(i = 1; i < (columns+1); i++){
 		indiv[i] = document.createElement('div');
 		indiv[i].setAttribute("class", "PhotoIndiv");
 		indiv[i].setAttribute("onclick", "imgFullscreen(this)");
@@ -262,6 +269,10 @@ function newRow(amount){
 		//console.log("height: " + image[i].height);
 
 		//console.log(i);
+		if (columns == 2){
+			//define 2 column page styling
+			indiv[i].setAttribute("class", "PhotoIndivMobile");
+		}
 	}
 	imgRowCounter++;
 	amount--;
