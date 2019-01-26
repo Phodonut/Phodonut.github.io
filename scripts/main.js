@@ -293,7 +293,7 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	//Refactoring source from the low quality to the highquality
 	var mobile = false;
 	if (screen.width <= screen.height){
-		mobile = true;
+		mobile = false;
 	}
 	var imgSource = div.getElementsByTagName('img')[0].src;
 	imgSource = imgSource.slice(0, -4);
@@ -310,11 +310,16 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	darkenOut.setAttribute("onclick", "deleteFullscreen()");
 	fullscreenDiv.appendChild(darkenOut);
 
-	if (mobile == false){
+	//if (mobile == false){
 		var arrowContainerL = document.createElement('div');
 		arrowContainerL.setAttribute("class", "arrowContainerL");
 		fullscreenDiv.appendChild(arrowContainerL);
-	}
+	//}
+
+	var imgContainer = document.createElement('div');
+	imgContainer.setAttribute("class", "imgFullContainer");
+	imgContainer.setAttribute("onclick", "deleteFullscreen()");
+	fullscreenDiv.appendChild(imgContainer);
 
 	//var arrowL = document.createElement('button');
 	//arrowL.setAttribute("class", "arrows");
@@ -322,15 +327,16 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	//arrowContainerL.appendChild(arrowL);
 
 	var imgFull = document.createElement('img');
-	if (screen.width <= screen.height){
+	if (mobile == true){
 		imgFull.setAttribute("class", "imgFullMobile");
 	}else{
 		imgFull.setAttribute("class", "imgFull");
 	}
 	imgFull.src = imgSource;
-	fullscreenDiv.appendChild(imgFull);
+	imgFull.setAttribute("onclick", "imgDisplayDetails()");
+	imgContainer.appendChild(imgFull);
 
-	if(mobile == false){
+	//if(mobile == false){
 		var arrowContainerR = document.createElement('div');
 		arrowContainerR.setAttribute("class", "arrowContainerR");
 		fullscreenDiv.appendChild(arrowContainerR);
@@ -341,11 +347,11 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 		arrowR.innerText = ">";
 		arrowContainerR.appendChild(arrowR);
 
-		var description = document.createElement('h1');
-		description.setAttribute("class", "imgDescription");
-		description.innerText = "testing";
-		fullscreenDiv.appendChild(description);
-	}
+		//var description = document.createElement('h1');         SHOULD create an on click that overlays white text with dark background over instead of current setup
+		//description.setAttribute("class", "imgDescription");
+		//description.innerText = "testing";
+		//fullscreenDiv.appendChild(description);
+	//}
 
 	//var descriptionContainer = document.createElement('div');
 	//descriptionContainer.setAttribute("class","imgDescriptionContainer");
@@ -371,8 +377,8 @@ function nextImageArrow(containingDiv){
 		prevArrowContainer.appendChild(arrowL);
 	}
 	imageCounter++;
-
-	var initSrc = containingDiv.childNodes[2].src;
+	console.log(containingDiv.childNodes[2].childNodes[0]);
+	var initSrc = containingDiv.childNodes[2].childNodes[0].src;
 	initSrc = initSrc.slice(0, -4);
 	var lastChar = initSrc[initSrc.length -1];
 	lastChar = parseInt(lastChar)+1;
@@ -394,8 +400,8 @@ function previousImageArrow(containingDiv){
 		var ArrowDiv = containingDiv.childNodes[1];
 		ArrowDiv.removeChild(ArrowDiv.childNodes[0]);
 	}
-	console.log(containingDiv);
-	var initSrc = containingDiv.childNodes[2].src;
+	//console.log(containingDiv);
+	var initSrc = containingDiv.childNodes[2].childNodes[0].src;
 	initSrc = initSrc.slice(0, -4);
 	var lastChar = initSrc[initSrc.length -1];
 	lastChar = parseInt(lastChar)-1;
@@ -428,7 +434,7 @@ var noRightArrow = false;
 function checkImageBeyond(imageSrc, nextSrc, containingDiv){
 	var img = new Image();
 
-	containingDiv.childNodes[2].src = imageSrc; // fails on mobile for now due to lack of arrow divs, can manually change later
+	containingDiv.childNodes[2].childNodes[0].src = imageSrc; // fails on mobile for now due to lack of arrow divs, can manually change later
 
 	img.onerror = function(){
 		//console.log("isn't valid");
@@ -448,7 +454,7 @@ function checkImageBeyond(imageSrc, nextSrc, containingDiv){
 function changeImage(imageSrc, containingDiv){
 	var img = new Image();
 	img.onload = function(){
-		containingDiv.childNodes[2].src = imageSrc;
+		containingDiv.childNodes[2].childNodes[0].src = imageSrc;
 
 	}
 	img.onerror = function(){
@@ -458,4 +464,16 @@ function changeImage(imageSrc, containingDiv){
 		noRightArrow = true;
 	}
 	img.src = imageSrc;
+}
+
+function imgDisplayDetails(){
+	var imgContainer = document.getElementById("activeFullscreen");
+	imgContainer = imgContainer.childNodes[2].childNodes[0].src;
+	console.log(imgContainer)
+
+
+	//below code stops event propogation (inside div onclick only, stops before outer div);
+	if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
 }
