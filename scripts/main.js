@@ -9,6 +9,7 @@ window.onload = function(){
   	}
   	if (window.location.href.match('portraits.html') != null) {
    			imageArraySetup();
+   			csvSetup();
   	}
 };
 
@@ -275,15 +276,11 @@ function newRow(amount){
 		image[i] = document.createElement('img');
 		image[i].setAttribute("class", "RowIMG");
 		image[i].src = "images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
-		//console.log(imgRowCounter);
 		indiv[i].appendChild(image[i]);
 		vignette[i] = document.createElement('div');
 		vignette[i].setAttribute("class", "vignette");
 		indiv[i].appendChild(vignette[i]);
-		//console.log("width: " + image[i].width);
-		//console.log("height: " + image[i].height);
 
-		//console.log(i);
 		if (columns == 2){
 			//define 2 column page styling
 			indiv[i].setAttribute("class", "PhotoIndivMobile");
@@ -297,7 +294,7 @@ function newRow(amount){
 var imgRowCounter = 0;
 var imgArray = []
 function imageArraySetup(){
-	for(i = 1; i < 20; i++){ //number of images usable
+	for(i = 1; i < 100; i++){ //number of images usable
 		imgArray[i] = ("imgArray"+ i); // Creates a src name to be used in above row creation function
 	}
 		newRow(3);
@@ -308,8 +305,8 @@ var imageCounter = 0;
 function imgFullscreen(div){   //this works for horizontal setup, not scalable for mobile. If VH > VW, create other function
 	//Refactoring source from the low quality to the highquality
 	var mobile = false;
-	if (screen.width <= screen.height){
-		mobile = false;
+	if (getWidth() <= getHeight()){
+		mobile = true; //not mobile but portrait version opposed to landscape
 	}
 	var imgSource = div.getElementsByTagName('img')[0].src;
 	imgSource = imgSource.slice(0, -4);
@@ -326,52 +323,53 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	darkenOut.setAttribute("onclick", "deleteFullscreen()");
 	fullscreenDiv.appendChild(darkenOut);
 
-	//if (mobile == false){
-		var arrowContainerL = document.createElement('div');
-		arrowContainerL.setAttribute("class", "arrowContainerL");
-		fullscreenDiv.appendChild(arrowContainerL);
-	//}
+
+	var arrowContainerL = document.createElement('div');
+	arrowContainerL.setAttribute("class", "arrowContainerL");
+	fullscreenDiv.appendChild(arrowContainerL);
+
 
 	var imgContainer = document.createElement('div');
 	imgContainer.setAttribute("class", "imgFullContainer");
 	imgContainer.setAttribute("onclick", "deleteFullscreen()");
 	fullscreenDiv.appendChild(imgContainer);
 
-	//var arrowL = document.createElement('button');
-	//arrowL.setAttribute("class", "arrows");
-	//arrowL.innerText = "<";
-	//arrowContainerL.appendChild(arrowL);
-
 	var imgFull = document.createElement('img');
-	if (mobile == true){
-		imgFull.setAttribute("class", "imgFullMobile");
-	}else{
-		imgFull.setAttribute("class", "imgFull");
-	}
+	imgFull.setAttribute("class", "imgFull");
+	
 	imgFull.src = imgSource;
+	var tempsrc = imgSource.slice(0, -4);
+	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempDimensions;
+	for(i = 0; i <= dimensions.length; i++){
+		if(dimensions[i][0] == undefined){
+			break;
+		}
+		if(dimensions[i][0] == tempsrc){
+			var width = dimensions[i][1];
+			var height = dimensions[i][2];
+			var tempDimensions = resizeImg(width, height);
+		}
+	}
+	
+
+	imgContainer.style.height = tempDimensions[1] + "px";
+	imgContainer.style.width = tempDimensions[0] + "px";
+	imgContainer.style.marginLeft = tempDimensions[2] + "px";
+
 	imgFull.setAttribute("onclick", "imgDisplayDetails()");
 	imgContainer.appendChild(imgFull);
 
-	//if(mobile == false){
-		var arrowContainerR = document.createElement('div');
-		arrowContainerR.setAttribute("class", "arrowContainerR");
-		fullscreenDiv.appendChild(arrowContainerR);
 
-		var arrowR = document.createElement('button');
-		arrowR.setAttribute("class", "arrows");
-		arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
-		arrowR.innerText = ">";
-		arrowContainerR.appendChild(arrowR);
+	var arrowContainerR = document.createElement('div');
+	arrowContainerR.setAttribute("class", "arrowContainerR");
+	fullscreenDiv.appendChild(arrowContainerR);
 
-		//var description = document.createElement('h1');         SHOULD create an on click that overlays white text with dark background over instead of current setup
-		//description.setAttribute("class", "imgDescription");
-		//description.innerText = "testing";
-		//fullscreenDiv.appendChild(description);
-	//}
-
-	//var descriptionContainer = document.createElement('div');
-	//descriptionContainer.setAttribute("class","imgDescriptionContainer");
-	//fullscreenDiv.appendChild(descriptionContainer);
+	var arrowR = document.createElement('button');
+	arrowR.setAttribute("class", "arrows");
+	arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
+	arrowR.innerText = ">";
+	arrowContainerR.appendChild(arrowR);
 
 	checkImageBeyond(imgSource, nextImageSource, fullscreenDiv);
 
@@ -393,7 +391,7 @@ function nextImageArrow(containingDiv){
 		prevArrowContainer.appendChild(arrowL);
 	}
 	imageCounter++;
-	console.log(containingDiv.childNodes[2].childNodes[0]);
+
 	var initSrc = containingDiv.childNodes[2].childNodes[0].src;
 	initSrc = initSrc.slice(0, -4);
 	var lastChar = initSrc[initSrc.length -1];
@@ -405,9 +403,27 @@ function nextImageArrow(containingDiv){
 	initSrc = initSrc.slice(0, -1);
 	nextSrc = initSrc + nextImageChar;
 	initSrc = initSrc + lastChar;
+	var tempsrc = initSrc;
 	initSrc = (initSrc + ".jpg");
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
+
+	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempDimensions;
+	for(i = 0; i <= dimensions.length; i++){
+		if(dimensions[i][0] == undefined){
+			break;
+		}
+		if(dimensions[i][0] == tempsrc){
+			var width = dimensions[i][1];
+			var height = dimensions[i][2];
+			var tempDimensions = resizeImg(width, height);
+		}
+	}
+
+	containingDiv.childNodes[2].style.height = tempDimensions[1] + "px";
+	containingDiv.childNodes[2].style.width = tempDimensions[0] + "px";
+	containingDiv.childNodes[2].style.marginLeft = tempDimensions[2] + "px";
 }
 
 function previousImageArrow(containingDiv){
@@ -416,7 +432,6 @@ function previousImageArrow(containingDiv){
 		var ArrowDiv = containingDiv.childNodes[1];
 		ArrowDiv.removeChild(ArrowDiv.childNodes[0]);
 	}
-	//console.log(containingDiv);
 	var initSrc = containingDiv.childNodes[2].childNodes[0].src;
 	initSrc = initSrc.slice(0, -4);
 	var lastChar = initSrc[initSrc.length -1];
@@ -428,10 +443,27 @@ function previousImageArrow(containingDiv){
 	initSrc = initSrc.slice(0, -1);
 	nextSrc = initSrc + nextImageChar;
 	initSrc = initSrc + lastChar;
+	var tempsrc = initSrc;
 	initSrc = (initSrc + ".jpg");
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
-	
+
+	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempDimensions;
+	for(i = 0; i <= dimensions.length; i++){
+		if(dimensions[i][0] == undefined){
+			break;
+		}
+		if(dimensions[i][0] == tempsrc){
+			var width = dimensions[i][1];
+			var height = dimensions[i][2];
+			var tempDimensions = resizeImg(width, height);
+		}
+	}
+
+	containingDiv.childNodes[2].style.height = tempDimensions[1] + "px";
+	containingDiv.childNodes[2].style.width = tempDimensions[0] + "px";
+	containingDiv.childNodes[2].style.marginLeft = tempDimensions[2] + "px";
 
 
 
@@ -453,7 +485,6 @@ function checkImageBeyond(imageSrc, nextSrc, containingDiv){
 	containingDiv.childNodes[2].childNodes[0].src = imageSrc; // fails on mobile for now due to lack of arrow divs, can manually change later
 
 	img.onerror = function(){
-		//console.log("isn't valid");
 		lastChar = imageSrc.slice(0,-4);
 		lastChar = lastChar[lastChar.length-1];
 		lastChar = parseInt(lastChar);
@@ -485,11 +516,91 @@ function changeImage(imageSrc, containingDiv){
 function imgDisplayDetails(){
 	var imgContainer = document.getElementById("activeFullscreen");
 	imgContainer = imgContainer.childNodes[2].childNodes[0].src;
-	console.log(imgContainer)
-
 
 	//below code stops event propogation (inside div onclick only, stops before outer div);
 	if (!e) var e = window.event;
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
+}
+
+
+var dimensions = [];
+for (x = 0; x < 100; x++){
+	dimensions[x] = [];
+}
+
+var csvPortraits = "1_1,1 of 4,2560,1836|1_2,2 of 4,2560,1696|1_3,3 of 4,2560,1696|1_4,4 of 4,2560,1696|2_1,1 of 6,2560,1949|2_2,2 of 6,2560,2255|2_3,3 of 6,2560,2139|2_4,4 of 6,2560,1696|2_5,5 of 6,2560,1822|2_6,6 of 6,2560,3865|3_1,1 of 4,2560,2937|3_2,2 of 4,2560,4417|3_3,3 of 4,2560,2508|3_4,4 of 4,2560,3531|4_1,1 of 3,2560,1859|4_2,2 of 3,2560,1909|4_3,3 of 3,1583,3042|5_1,1 of 3,2560,2885|5_2,2 of 3,2560,3063|5_3,3 of 3,2560,1696|6_1,1 of 2,2560,1696|6_2,2 of 2,2560,4436|7_1,1 of 3,2560,1763|7_2,2 of 3,2560,1676|7_3,3 of 3,2560,1696|8_1,1 of 1,2560,1911|9_1,1 of 3,2560,2545|9_2,2 of 3,2560,2545|9_3,3 of 3,2308,2311|10_1,1 of 2,2560,1913|10_2,2 of 2,2560,2070";
+function csvSetup(){
+	var csvPortSplit1 = csvPortraits.split("|");
+	var csvPortSplit2;
+
+	for(i = 0; i <= csvPortSplit1.length; i++){
+		if (csvPortSplit1[i] == undefined){
+			break;
+		}
+		csvPortSplit2 = csvPortSplit1[i].split(",");
+
+		dimensions[i][0] = csvPortSplit2[0];
+		dimensions[i][1] = csvPortSplit2[2];
+		dimensions[i][2] = csvPortSplit2[3];
+	}
+}
+
+function resizeImg(width, height){
+	var browserW = getWidth();
+	var browserH = getHeight();
+	var adjustment;
+	var maxW = (.91*browserW - .91*.15*browserW);
+
+	var maxH = (.9*browserH - .9*.1*browserH -.1); 
+
+	if((width <= maxW) && (height <= maxH)){ //fit to container if smaller than both
+		adjustment = (maxW - width) / width;
+		width = (1+adjustment)*width;
+		hieght = (1+adjustment)*height;
+	}
+	if(width > maxW){
+		adjustment = (width - maxW) / width;
+		width = maxW;
+		height = height - (height*adjustment) - .001;
+	}
+	if(height > maxH){
+		adjustment = (height - maxH) / height;
+		width = width - (width*adjustment) - .001;
+		height = maxH;
+	}
+
+	var tempDimensions = [];
+	tempDimensions[0] = width;
+	tempDimensions[1] = height;
+	if(width < maxW){
+		tempDimensions[2] = (maxW-width)/2;
+		tempDimensions[3] = 0;
+	}else if(height < maxH){
+		tempDimensions[3] = (maxH-height)/2;
+		tempDimensions[2] = 0;
+	}
+	return tempDimensions;
+	//returns [width, height, margin width, margin height]
+}
+
+
+function getWidth() {
+  return Math.max(
+    document.body.scrollWidth,
+    document.documentElement.scrollWidth,
+    document.body.offsetWidth,
+    document.documentElement.offsetWidth,
+    document.documentElement.clientWidth
+  );
+}
+
+function getHeight() {
+  return Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.documentElement.clientHeight
+  );
 }
