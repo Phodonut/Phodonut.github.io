@@ -304,6 +304,7 @@ function imageArraySetup(){
 var imageCounter = 0;
 function imgFullscreen(div){   //this works for horizontal setup, not scalable for mobile. If VH > VW, create other function
 	//Refactoring source from the low quality to the highquality
+	console.log("test version 1");
 	var mobile = false;
 	if (getWidth() <= getHeight()){
 		mobile = true; //not mobile but portrait version opposed to landscape
