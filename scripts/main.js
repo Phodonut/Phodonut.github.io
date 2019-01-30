@@ -304,7 +304,6 @@ function imageArraySetup(){
 var imageCounter = 0;
 function imgFullscreen(div){   //this works for horizontal setup, not scalable for mobile. If VH > VW, create other function
 	//Refactoring source from the low quality to the highquality
-	console.log("test version 3");
 	var mobile = false;
 	if (getWidth() <= getHeight()){
 		mobile = true; //not mobile but portrait version opposed to landscape
@@ -340,13 +339,10 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	
 	imgFull.src = imgSource;
 	var tempsrc = imgSource.slice(0, -4);
-	console.log(tempsrc);
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
-	console.log(tempsrc);
 	for(i = 0; i <= dimensions.length; i++){
-		console.log("timer: " + dimensions[i][0]);
 		if(dimensions[i][0] == undefined){
 			break;
 		}
@@ -358,7 +354,6 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 		}
 	}
 	
-	console.log("went ahead?");
 	imgContainer.style.height = tempDimensions[1] + "px";
 	imgContainer.style.width = tempDimensions[0] + "px";
 	imgContainer.style.marginLeft = tempDimensions[2] + "px";
