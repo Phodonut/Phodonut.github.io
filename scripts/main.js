@@ -342,7 +342,7 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	var tempsrc = imgSource.slice(0, -4);
 	console.log(tempsrc);
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
-	//var tempsrc = tempsrc.slice(1); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	console.log(tempsrc);
 	for(i = 0; i <= dimensions.length; i++){
@@ -414,7 +414,8 @@ function nextImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
 
-	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
@@ -454,7 +455,8 @@ function previousImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
 
-	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
