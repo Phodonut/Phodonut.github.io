@@ -342,8 +342,9 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	var tempsrc = imgSource.slice(0, -4);
 	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	var tempDimensions;
+	console.log(tempsrc);
 	for(i = 0; i <= dimensions.length; i++){
-		console.log("timer: " + i);
+		console.log("timer: " + dimensions[i][0]);
 		if(dimensions[i][0] == undefined){
 			break;
 		}
