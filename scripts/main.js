@@ -342,6 +342,7 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
+		console.log("timer: " + i);
 		if(dimensions[i][0] == undefined){
 			break;
 		}
@@ -349,10 +350,11 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
 			var tempDimensions = resizeImg(width, height);
+			break;
 		}
 	}
 	
-
+	console.log("went ahead?");
 	imgContainer.style.height = tempDimensions[1] + "px";
 	imgContainer.style.width = tempDimensions[0] + "px";
 	imgContainer.style.marginLeft = tempDimensions[2] + "px";
