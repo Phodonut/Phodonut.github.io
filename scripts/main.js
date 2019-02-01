@@ -331,7 +331,6 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 
 	var imgContainer = document.createElement('div');
 	imgContainer.setAttribute("class", "imgFullContainer");
-	imgContainer.setAttribute("onclick", "deleteFullscreen()");
 	fullscreenDiv.appendChild(imgContainer);
 
 	var imgFull = document.createElement('img');
@@ -349,6 +348,7 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 		if(dimensions[i][0] == tempsrc){
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
+			var deets = dimensions[i][3];
 			var tempDimensions = resizeImg(width, height);
 			break;
 		}
@@ -358,7 +358,7 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	imgContainer.style.width = tempDimensions[0] + "px";
 	imgContainer.style.marginLeft = tempDimensions[2] + "px";
 
-	imgFull.setAttribute("onclick", "imgDisplayDetails()");
+	imgFull.setAttribute("onclick", "popBubbles");
 	imgContainer.appendChild(imgFull);
 
 
@@ -371,6 +371,8 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
 	arrowR.innerText = ">";
 	arrowContainerR.appendChild(arrowR);
+
+	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 
 	checkImageBeyond(imgSource, nextImageSource, fullscreenDiv);
 
@@ -392,6 +394,9 @@ function nextImageArrow(containingDiv){
 		prevArrowContainer.appendChild(arrowL);
 	}
 	imageCounter++;
+	if (typeof containingDiv.childNodes[2].childNodes[1] !== "undefined"){
+		containingDiv.childNodes[2].removeChild(containingDiv.childNodes[2].childNodes[1]);
+	}
 
 	var initSrc = containingDiv.childNodes[2].childNodes[0].src;
 	initSrc = initSrc.slice(0, -4);
@@ -419,9 +424,12 @@ function nextImageArrow(containingDiv){
 		if(dimensions[i][0] == tempsrc){
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
+			var deets = dimensions[i][3];
 			var tempDimensions = resizeImg(width, height);
 		}
 	}
+
+	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 
 	containingDiv.childNodes[2].style.height = tempDimensions[1] + "px";
 	containingDiv.childNodes[2].style.width = tempDimensions[0] + "px";
@@ -429,6 +437,9 @@ function nextImageArrow(containingDiv){
 }
 
 function previousImageArrow(containingDiv){
+	if (typeof containingDiv.childNodes[2].childNodes[1] !== "undefined"){
+		containingDiv.childNodes[2].removeChild(containingDiv.childNodes[2].childNodes[1]);
+	}
 	imageCounter--;
 	if(imageCounter == 0){
 		var ArrowDiv = containingDiv.childNodes[1];
@@ -460,9 +471,12 @@ function previousImageArrow(containingDiv){
 		if(dimensions[i][0] == tempsrc){
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
+			var deets = dimensions[i][3];
 			var tempDimensions = resizeImg(width, height);
 		}
 	}
+
+	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 
 	containingDiv.childNodes[2].style.height = tempDimensions[1] + "px";
 	containingDiv.childNodes[2].style.width = tempDimensions[0] + "px";
@@ -516,11 +530,30 @@ function changeImage(imageSrc, containingDiv){
 	img.src = imageSrc;
 }
 
-function imgDisplayDetails(){
+function imgDisplayDetails(width, height, deets){ // also pass array of details to list as <p> 
 	var imgContainer = document.getElementById("activeFullscreen");
-	imgContainer = imgContainer.childNodes[2].childNodes[0].src;
+	imgContainer = imgContainer.childNodes[2];
 
+	var descriptionDiv = document.createElement('div');
+	var descriptionLines = [];
+	descriptionDiv.setAttribute("class", "descriptionOverlayDiv");
+	descriptionDiv.setAttribute("onclick", "popBubbles");
+	imgContainer.appendChild(descriptionDiv);
+	var detailedDeets = deets.split("$");
+
+	for(i = 0; i < detailedDeets.length; i++){
+		console.log(i);
+		descriptionLines[i] = document.createElement('p');
+		descriptionLines[i].setAttribute("style", ("font-size: " + .3*height/detailedDeets.length + "px"));
+		descriptionLines[i].innerText = detailedDeets[i];
+		descriptionDiv.appendChild(descriptionLines[i]);
+
+	}
+}
+
+function popBubbles(){
 	//below code stops event propogation (inside div onclick only, stops before outer div);
+	console.log("testing");
 	if (!e) var e = window.event;
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
@@ -532,7 +565,7 @@ for (x = 0; x < 100; x++){
 	dimensions[x] = [];
 }
 
-var csvPortraits = "1_1,1 of 4,2560,1836|1_2,2 of 4,2560,1696|1_3,3 of 4,2560,1696|1_4,4 of 4,2560,1696|2_1,1 of 6,2560,1949|2_2,2 of 6,2560,2255|2_3,3 of 6,2560,2139|2_4,4 of 6,2560,1696|2_5,5 of 6,2560,1822|2_6,6 of 6,2560,3865|3_1,1 of 4,2560,2937|3_2,2 of 4,2560,4417|3_3,3 of 4,2560,2508|3_4,4 of 4,2560,3531|4_1,1 of 3,2560,1859|4_2,2 of 3,2560,1909|4_3,3 of 3,1583,3042|5_1,1 of 3,2560,2885|5_2,2 of 3,2560,3063|5_3,3 of 3,2560,1696|6_1,1 of 2,2560,1696|6_2,2 of 2,2560,4436|7_1,1 of 3,2560,1763|7_2,2 of 3,2560,1676|7_3,3 of 3,2560,1696|8_1,1 of 1,2560,1911|9_1,1 of 3,2560,2545|9_2,2 of 3,2560,2545|9_3,3 of 3,2308,2311|10_1,1 of 2,2560,1913|10_2,2 of 2,2560,2070";
+var csvPortraits = "1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m$Shutter Speed: 1/60s$Aperature: 5$ISO: 400|1_2,2 of 4,2560,1696,2 of 4$Testing|1_3,3 of 4,2560,1696|1_4,4 of 4,2560,1696|2_1,1 of 6,2560,1949|2_2,2 of 6,2560,2255|2_3,3 of 6,2560,2139|2_4,4 of 6,2560,1696|2_5,5 of 6,2560,1822|2_6,6 of 6,2560,3865|3_1,1 of 4,2560,2937|3_2,2 of 4,2560,4417|3_3,3 of 4,2560,2508|3_4,4 of 4,2560,3531|4_1,1 of 3,2560,1859|4_2,2 of 3,2560,1909|4_3,3 of 3,1583,3042|5_1,1 of 3,2560,2885|5_2,2 of 3,2560,3063|5_3,3 of 3,2560,1696|6_1,1 of 2,2560,1696|6_2,2 of 2,2560,4436|7_1,1 of 3,2560,1763|7_2,2 of 3,2560,1676|7_3,3 of 3,2560,1696|8_1,1 of 1,2560,1911|9_1,1 of 3,2560,2545|9_2,2 of 3,2560,2545|9_3,3 of 3,2308,2311|10_1,1 of 2,2560,1913|10_2,2 of 2,2560,2070";
 function csvSetup(){
 	var csvPortSplit1 = csvPortraits.split("|");
 	var csvPortSplit2;
@@ -546,6 +579,7 @@ function csvSetup(){
 		dimensions[i][0] = csvPortSplit2[0];
 		dimensions[i][1] = csvPortSplit2[2];
 		dimensions[i][2] = csvPortSplit2[3];
+		dimensions[i][3] = csvPortSplit2[4];
 	}
 }
 
