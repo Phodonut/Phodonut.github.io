@@ -1,15 +1,18 @@
 var col1SRC = ["images/1col1.jpg", "images/2col1.jpg", "images/3col1.jpg", "images/4col1.jpg"];
 var col2SRC = ["images/1col2.jpg", "images/2col2.jpg", "images/3col2.jpg", "images/4col2.jpg"];
 var col3SRC = ["images/1col3.jpg", "images/2col3.jpg", "images/3col3.jpg", "images/4col3.jpg"];
-
+var noNewRows = false;
+var docHeight = getHeight();
+var docWidth = getWidth();
 window.onload = function(){
 	navbarSticky()
 	if (window.location.href.match('photography.html') != null) {
    			colInit();
   	}
   	if (window.location.href.match('portraits.html') != null) {
+  			csvSetup();
+  			noNewRows = false;
    			imageArraySetup();
-   			csvSetup();
   	}
 };
 
@@ -244,7 +247,9 @@ function fadeElement(el, start, end, time){
 
 function newRowCheck(){
 	if((window.innerHeight + window.pageYOffset) >= document.body.scrollHeight-2){ //if at bottom and scrolling
-		newRow(1);
+		if(noNewRows == false){
+			newRow(1);
+		}
 	}
 }
 // Below is code for the portrait section or generic photo wall implementation
@@ -255,7 +260,7 @@ function newRow(amount){
 	}
 
 
-	if (screen.width < screen.height){ //mobile friendly ish
+	if (docWidth < docHeight){ //mobile friendly ish
 		columns = 2;
 	}
 
@@ -269,13 +274,24 @@ function newRow(amount){
 	var image = [];
 	var vignette = [];
 	for(i = 1; i < (columns+1); i++){
+		if((i+columns*imgRowCounter) > parseInt(dimensions[csvPortSplit1.length-1][0].slice(0,-2))){ // checks if past final image available
+			if(i == 1){ // if first thrown fileNotAvailable is the first of the row, delete the new row
+				div.parentNode.removeChild(div);
+			}
+			noNewRows = true; //create no future rows
+			break;
+		}
 		indiv[i] = document.createElement('div');
 		indiv[i].setAttribute("class", "PhotoIndiv");
 		indiv[i].setAttribute("onclick", "imgFullscreen(this)");
 		div.appendChild(indiv[i]);
 		image[i] = document.createElement('img');
 		image[i].setAttribute("class", "RowIMG");
-		image[i].src = "images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
+		if((i+columns*imgRowCounter) > parseInt(dimensions[csvPortSplit1.length-1][0].slice(0,-2))){ //If image would be beyond what we have in array
+			image[i].src = "images/imgArray1_1.jpg"; //FILE NOT FOUND ERROR AVOIDANCE, shouldn't happen anymore but just in case
+		}else{
+			image[i].src = "images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
+		}
 		indiv[i].appendChild(image[i]);
 		vignette[i] = document.createElement('div');
 		vignette[i].setAttribute("class", "vignette");
@@ -302,12 +318,8 @@ function imageArraySetup(){
 
 
 var imageCounter = 0;
-function imgFullscreen(div){   //this works for horizontal setup, not scalable for mobile. If VH > VW, create other function
-	//Refactoring source from the low quality to the highquality
-	var mobile = false;
-	if (getWidth() <= getHeight()){
-		mobile = true; //not mobile but portrait version opposed to landscape
-	}
+function imgFullscreen(div){
+	
 	var imgSource = div.getElementsByTagName('img')[0].src;
 	imgSource = imgSource.slice(0, -4);
 	nextImageSource = (imgSource + "_" + 2 + ".jpg");
@@ -349,6 +361,7 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
 			var deets = dimensions[i][3];
+			var number = dimensions[i][4];
 			var tempDimensions = resizeImg(width, height);
 			break;
 		}
@@ -366,16 +379,17 @@ function imgFullscreen(div){   //this works for horizontal setup, not scalable f
 	arrowContainerR.setAttribute("class", "arrowContainerR");
 	fullscreenDiv.appendChild(arrowContainerR);
 
-	var arrowR = document.createElement('button');
-	arrowR.setAttribute("class", "arrows");
-	arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
-	arrowR.innerText = ">";
-	arrowContainerR.appendChild(arrowR);
-
-	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
+	//if 1 of 1 then don't create button
+	if(number !== "1 of 1"){
+		var arrowR = document.createElement('button');
+		arrowR.setAttribute("class", "arrows");
+		arrowR.setAttribute("onclick", "nextImageArrow(this.parentNode.parentNode)")
+		arrowR.innerText = ">";
+		arrowContainerR.appendChild(arrowR);
+	}
 
 	checkImageBeyond(imgSource, nextImageSource, fullscreenDiv);
-
+	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 }
 
 function deleteFullscreen(){
@@ -394,7 +408,7 @@ function nextImageArrow(containingDiv){
 		prevArrowContainer.appendChild(arrowL);
 	}
 	imageCounter++;
-	if (typeof containingDiv.childNodes[2].childNodes[1] !== "undefined"){
+	if (typeof containingDiv.childNodes[2].childNodes[1] !== "undefined"){ //removes the description for each image if it exists (should always exist)
 		containingDiv.childNodes[2].removeChild(containingDiv.childNodes[2].childNodes[1]);
 	}
 
@@ -407,7 +421,7 @@ function nextImageArrow(containingDiv){
 	lastChar = lastChar.toString();
 
 	initSrc = initSrc.slice(0, -1);
-	nextSrc = initSrc + nextImageChar;
+	var nextSrc = initSrc + nextImageChar;
 	initSrc = initSrc + lastChar;
 	var tempsrc = initSrc;
 	initSrc = (initSrc + ".jpg");
@@ -429,11 +443,12 @@ function nextImageArrow(containingDiv){
 		}
 	}
 
-	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 
 	containingDiv.childNodes[2].style.height = tempDimensions[1] + "px";
 	containingDiv.childNodes[2].style.width = tempDimensions[0] + "px";
 	containingDiv.childNodes[2].style.marginLeft = tempDimensions[2] + "px";
+
+	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 }
 
 function previousImageArrow(containingDiv){
@@ -454,12 +469,12 @@ function previousImageArrow(containingDiv){
 	lastChar = lastChar.toString();
 
 	initSrc = initSrc.slice(0, -1);
-	nextSrc = initSrc + nextImageChar;
+	var nextSrc = initSrc + nextImageChar;
 	initSrc = initSrc + lastChar;
 	var tempsrc = initSrc;
 	initSrc = (initSrc + ".jpg");
 	nextSrc = (nextSrc + ".jpg");
-	checkImageBeyond(initSrc, nextSrc, containingDiv);
+	checkImageBeyond(initSrc, nextSrc, containingDiv); //nextSrc is global and gets updated by this
 
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
@@ -476,13 +491,10 @@ function previousImageArrow(containingDiv){
 		}
 	}
 
-	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 
 	containingDiv.childNodes[2].style.height = tempDimensions[1] + "px";
 	containingDiv.childNodes[2].style.width = tempDimensions[0] + "px";
 	containingDiv.childNodes[2].style.marginLeft = tempDimensions[2] + "px";
-
-
 
 	if(noRightArrow){
 		noRightArrow = false;
@@ -493,26 +505,37 @@ function previousImageArrow(containingDiv){
 		containingDiv.childNodes[3].appendChild(arrowR);
 	}
 
+	imgDisplayDetails(tempDimensions[0],tempDimensions[1], deets);
 }
 
 var noRightArrow = false;
 function checkImageBeyond(imageSrc, nextSrc, containingDiv){
 	var img = new Image();
 
-	containingDiv.childNodes[2].childNodes[0].src = imageSrc; // fails on mobile for now due to lack of arrow divs, can manually change later
+	containingDiv.childNodes[2].childNodes[0].src = imageSrc;
 
 	img.onerror = function(){
 		lastChar = imageSrc.slice(0,-4);
 		lastChar = lastChar[lastChar.length-1];
 		lastChar = parseInt(lastChar);
-		if(lastChar > 1){
+		if(lastChar > 1){ // making sure it isn't triggering from previous arrow being clicked
 			containingDiv = containingDiv.childNodes[3];
 			containingDiv.removeChild(containingDiv.childNodes[0]);
 			noRightArrow = true;
 		}
 	}
-	img.src = nextSrc;
+	img.src = nextSrc; // if this throws error, calls above function
 
+}
+
+function checkImgSrc(initialSrc, imageObj){
+	var img = new Image();
+	imageObj.src = initialSrc;
+
+	img.onerror = function(){
+		imageObj.src = "images/FileNotFound.jpg";
+	}
+	img.src = initialSrc;
 }
 
 function changeImage(imageSrc, containingDiv){
@@ -530,7 +553,7 @@ function changeImage(imageSrc, containingDiv){
 	img.src = imageSrc;
 }
 
-function imgDisplayDetails(width, height, deets){ // also pass array of details to list as <p> 
+function imgDisplayDetails(width, height, deets){ 
 	var imgContainer = document.getElementById("activeFullscreen");
 	imgContainer = imgContainer.childNodes[2];
 
@@ -542,9 +565,9 @@ function imgDisplayDetails(width, height, deets){ // also pass array of details 
 	var detailedDeets = deets.split("$");
 
 	for(i = 0; i < detailedDeets.length; i++){
-		console.log(i);
 		descriptionLines[i] = document.createElement('p');
 		descriptionLines[i].setAttribute("style", ("font-size: " + .3*height/detailedDeets.length + "px"));
+		descriptionLines[i].setAttribute("class", "innerDescription");
 		descriptionLines[i].innerText = detailedDeets[i];
 		descriptionDiv.appendChild(descriptionLines[i]);
 
@@ -565,9 +588,10 @@ for (x = 0; x < 100; x++){
 	dimensions[x] = [];
 }
 
-var csvPortraits = "1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m$Shutter Speed: 1/60s$Aperature: 5$ISO: 400|1_2,2 of 4,2560,1696,2 of 4$Testing|1_3,3 of 4,2560,1696|1_4,4 of 4,2560,1696|2_1,1 of 6,2560,1949|2_2,2 of 6,2560,2255|2_3,3 of 6,2560,2139|2_4,4 of 6,2560,1696|2_5,5 of 6,2560,1822|2_6,6 of 6,2560,3865|3_1,1 of 4,2560,2937|3_2,2 of 4,2560,4417|3_3,3 of 4,2560,2508|3_4,4 of 4,2560,3531|4_1,1 of 3,2560,1859|4_2,2 of 3,2560,1909|4_3,3 of 3,1583,3042|5_1,1 of 3,2560,2885|5_2,2 of 3,2560,3063|5_3,3 of 3,2560,1696|6_1,1 of 2,2560,1696|6_2,2 of 2,2560,4436|7_1,1 of 3,2560,1763|7_2,2 of 3,2560,1676|7_3,3 of 3,2560,1696|8_1,1 of 1,2560,1911|9_1,1 of 3,2560,2545|9_2,2 of 3,2560,2545|9_3,3 of 3,2308,2311|10_1,1 of 2,2560,1913|10_2,2 of 2,2560,2070";
+var csvPortSplit1;
+var csvPortraits = "1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m $Shutter Speed: 1/60s$Aperature: f/5.6 $ISO: 400|1_2,2 of 4,2560,1696,2 of 4$Editing Time: <30m $Shutter Speed: 1/80s $Aperature: f/5.6 $ISO: 200 |1_3,3 of 4,2560,1696,3 of 4$Editing Time: <30m $Shutter Speed: 1/60s $Aperature: f/4.8 $ISO: 400|1_4,4 of 4,2560,1696,4 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/5.6 $ISO: 100|2_1,1 of 6,2560,1949,1 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_2,2 of 6,2560,2255,2 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_3,3 of 6,2560,2139,3 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_4,4 of 6,2560,1696,4 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_5,5 of 6,2560,1822,5 of 6$Editing Time: ~2hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_6,6 of 6,2560,3865,6 of 6$Editing Time: ~4hr $Shutter Speed: 1/125s $Aperature: f/4 $ISO: 640 |3_1,1 of 4,2560,2937,1 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_2,2 of 4,2560,4417,2 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 400 |3_3,3 of 4,2560,2508,3 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_4,4 of 4,2560,3531,4 of 4$Editing Time: ~30m $Shutter Speed: 1/200s $Aperature: f/4 $ISO: 100|4_1,1 of 3,2560,1859,1 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4 $ISO: 800 |4_2,2 of 3,2560,1909,2 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4.5 $ISO: 800 |4_3,3 of 3,1583,3042,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4.8 $ISO: 500 |5_1,1 of 3,2560,2885,1 of 3$Editing Time: ~45m $Shutter Speed: 1/160s $Aperature: f/4 $ISO: 400|5_2,2 of 3,2560,3063,2 of 3$Editing Time: ~1hr $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 800 |5_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4 $ISO: 100 |6_1,1 of 2,2560,1696,1 of 2$Editing Time: ~45m $Shutter Speed: 1/800s $Aperature: f/5.6 $ISO: 640|6_2,2 of 2,2560,4436,2 of 2$Editing Time: ~30m $Shutter Speed: 1/640s $Aperature: f/5.6 $ISO: 640 |7_1,1 of 3,2560,1763,1 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/5.6 $ISO: 400 |7_2,2 of 3,2560,1676,2 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/4.5 $ISO: 400|7_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/1250s $Aperature: f/5 $ISO: 400 |8_1,1 of 1,2560,1911,1 of 1$Editing Time: ~45m $Shutter Speed: 1/25s $Aperature: f/14 $ISO: 500 |9_1,1 of 3,2560,2545,1 of 3$Editing Time: ~1hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_2,2 of 3,2560,2545,2 of 3$Editing Time: ~8hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_3,3 of 3,2308,2311,3 of 3$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_1,1 of 2,2560,1913,1 of 2$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_2,2 of 2,2560,2070,2 of 2$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/5.3 $ISO: 400 ";
 function csvSetup(){
-	var csvPortSplit1 = csvPortraits.split("|");
+	csvPortSplit1 = csvPortraits.split("|");
 	var csvPortSplit2;
 
 	for(i = 0; i <= csvPortSplit1.length; i++){
@@ -580,12 +604,13 @@ function csvSetup(){
 		dimensions[i][1] = csvPortSplit2[2];
 		dimensions[i][2] = csvPortSplit2[3];
 		dimensions[i][3] = csvPortSplit2[4];
+		dimensions[i][4] = csvPortSplit2[1];
 	}
 }
 
 function resizeImg(width, height){
-	var browserW = getWidth();
-	var browserH = getHeight();
+	var browserW = docWidth;
+	var browserH = docHeight;
 	var adjustment;
 	var maxW = (.91*browserW - .91*.15*browserW);
 

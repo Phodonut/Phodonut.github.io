@@ -1,32 +1,32 @@
 source number, current, width, height
-1_1,1 of 4,2560,1836
-|1_2,2 of 4,2560,1696
-|1_3,3 of 4,2560,1696
-|1_4,4 of 4,2560,1696
-|2_1,1 of 6,2560,1949
-|2_2,2 of 6,2560,2255
-|2_3,3 of 6,2560,2139
-|2_4,4 of 6,2560,1696
-|2_5,5 of 6,2560,1822
-|2_6,6 of 6,2560,3865
-|3_1,1 of 4,2560,2937
-|3_2,2 of 4,2560,4417
-|3_3,3 of 4,2560,2508
-|3_4,4 of 4,2560,3531
-|4_1,1 of 3,2560,1859
-|4_2,2 of 3,2560,1909
-|4_3,3 of 3,1583,3042
-|5_1,1 of 3,2560,2885
-|5_2,2 of 3,2560,3063
-|5_3,3 of 3,2560,1696
-|6_1,1 of 2,2560,1696
-|6_2,2 of 2,2560,4436
-|7_1,1 of 3,2560,1763
-|7_2,2 of 3,2560,1676
-|7_3,3 of 3,2560,1696
-|8_1,1 of 1,2560,1911
-|9_1,1 of 3,2560,2545
-|9_2,2 of 3,2560,2545
-|9_3,3 of 3,2308,2311
-|10_1,1 of 2,2560,1913
-|10_2,2 of 2,2560,2070
+1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m $Shutter Speed: 1/60s$Aperature: f/5.6 $ISO: 400
+|1_2,2 of 4,2560,1696,2 of 4$Editing Time: <30m $Shutter Speed: 1/80s $Aperature: f/5.6 $ISO: 200 
+|1_3,3 of 4,2560,1696,3 of 4$Editing Time: <30m $Shutter Speed: 1/60s $Aperature: f/4.8 $ISO: 400
+|1_4,4 of 4,2560,1696,4 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/5.6 $ISO: 100
+|2_1,1 of 6,2560,1949,1 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500
+|2_2,2 of 6,2560,2255,2 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500
+|2_3,3 of 6,2560,2139,3 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 
+|2_4,4 of 6,2560,1696,4 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 
+|2_5,5 of 6,2560,1822,5 of 6$Editing Time: ~2hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500
+|2_6,6 of 6,2560,3865,6 of 6$Editing Time: ~4hr $Shutter Speed: 1/125s $Aperature: f/4 $ISO: 640 
+|3_1,1 of 4,2560,2937,1 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100
+|3_2,2 of 4,2560,4417,2 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 400 
+|3_3,3 of 4,2560,2508,3 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100
+|3_4,4 of 4,2560,3531,4 of 4$Editing Time: ~30m $Shutter Speed: 1/200s $Aperature: f/4 $ISO: 100
+|4_1,1 of 3,2560,1859,1 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4 $ISO: 800 
+|4_2,2 of 3,2560,1909,2 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4.5 $ISO: 800 
+|4_3,3 of 3,1583,3042,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4.8 $ISO: 500 
+|5_1,1 of 3,2560,2885,1 of 3$Editing Time: ~45m $Shutter Speed: 1/160s $Aperature: f/4 $ISO: 400
+|5_2,2 of 3,2560,3063,2 of 3$Editing Time: ~1hr $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 800 
+|5_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4 $ISO: 100 
+|6_1,1 of 2,2560,1696,1 of 2$Editing Time: ~45m $Shutter Speed: 1/800s $Aperature: f/5.6 $ISO: 640
+|6_2,2 of 2,2560,4436,2 of 2$Editing Time: ~30m $Shutter Speed: 1/640s $Aperature: f/5.6 $ISO: 640 
+|7_1,1 of 3,2560,1763,1 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/5.6 $ISO: 400 
+|7_2,2 of 3,2560,1676,2 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/4.5 $ISO: 400
+|7_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/1250s $Aperature: f/5 $ISO: 400 
+|8_1,1 of 1,2560,1911,1 of 1$Editing Time: ~45m $Shutter Speed: 1/25s $Aperature: f/14 $ISO: 500 
+|9_1,1 of 3,2560,2545,1 of 3$Editing Time: ~1hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400
+|9_2,2 of 3,2560,2545,2 of 3$Editing Time: ~8hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400
+|9_3,3 of 3,2308,2311,3 of 3$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400
+|10_1,1 of 2,2560,1913,1 of 2$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400
+|10_2,2 of 2,2560,2070,2 of 2$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/5.3 $ISO: 400 

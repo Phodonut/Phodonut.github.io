@@ -433,6 +433,17 @@ least to not care? Idk, but problem is there; */
 }
 
 .descriptionOverlayDiv:hover {
-	background-color: rgba(0,0,0,.4);
+	background-color: rgba(0,0,0,.55);
 	opacity: 1;
+}
+
+.innerDescription{
+	margin-left: 1vw;
+	margin-top: 3px;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
