@@ -270,7 +270,7 @@ function newRow(amount){
 	docLoc = document.location;
 	docLoc = docLoc.toString();
 	docLoc = docLoc.slice(58, -5);
-	//console.log("image location = "+docLoc + "images/");
+	console.log("image location = "+docLoc + "images/");
 	var columns = 4;
 	if(amount == 0){
 		return;
@@ -303,11 +303,14 @@ function newRow(amount){
 		indiv[i].setAttribute("onclick", "imgFullscreen(this)");
 		div.appendChild(indiv[i]);
 		image[i] = document.createElement('img');
-		image[i].setAttribute("class", "RowIMG");
+		image[i].setAttribute("class", "RowIMG"); //CURRENTLY THROWING ERROR File Not Found path
+		console.log("info 1: " + dimensions[csvPortSplit1.length-1][0].slice(0,-2));  //console logging test if first # of image source isn't beyond what array has been set up for?
+		console.log("Must be less than: " + (i+columns*imgRowCounter));
 		if((i+columns*imgRowCounter) > parseInt(dimensions[csvPortSplit1.length-1][0].slice(0,-2))){ //If image would be beyond what we have in array
 			image[i].src = docLoc + "Images/imgArray1_1.jpg"; //FILE NOT FOUND ERROR AVOIDANCE, shouldn't happen anymore but just in case
 		}else{
 			image[i].src = docLoc + "Images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
+			console.log("error 404 image not found branch");
 		}
 		indiv[i].appendChild(image[i]);
 		vignette[i] = document.createElement('div');
