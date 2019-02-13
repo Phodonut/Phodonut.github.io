@@ -370,13 +370,11 @@ function imgFullscreen(div){
 	var imgFull = document.createElement('img');
 	imgFull.setAttribute("class", "imgFull");
 	
-	imgFull.src = imgSource; //remove the .jpg
-	var tempsrc = imgSource.slice(0, -4);
-	var tempsrc = tempsrc.slice(-3); //have to slice from beginning in order to account for double digits
-	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING  MAy BE UNNECESSARY NOW THAT I SLICE ALL BUT LAST 3 IMPORTANT LETTERs
+	imgFull.src = imgSource;
+	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
-	//console.log(tempsrc);
-	//console.log(dimensions[4][0]);
+
 	for(i = 0; i <= dimensions.length; i++){
 		console.log("dimensions[i][0] : " + dimensions[i][0]);
 		console.log("tempsrc : " + tempsrc);
@@ -454,7 +452,7 @@ function nextImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
 
-	var tempsrc = tempsrc.slice(-3); //have to slice from beginning in order to account for double digits
+	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
@@ -502,8 +500,8 @@ function previousImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv); //nextSrc is global and gets updated by this
 
-	var tempsrc = tempsrc.slice(-3); //have to slice from beginning in order to account for double digits
-	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
+	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
+	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
