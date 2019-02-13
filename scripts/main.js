@@ -9,10 +9,21 @@ window.onload = function(){
 	if (window.location.href.match('photography.html') != null) {
    			colInit();
   	}
-  	if (window.location.href.match('portraits.html') != null) {
-  			csvSetup();
-  			noNewRows = false;
-   			imageArraySetup();
+  	if ((window.location.href.match('portraits.html') != null)) {
+  		csvSetup(csvPortraits);
+  		noNewRows = false;
+   		imageArraySetup();
+  	}else if ((window.location.href.match('retouching.html') != null)) {
+  		alert("page under construction");
+  		csvSetup(csvRetouching);
+  		noNewRows = false;
+   		imageArraySetup();
+
+  	}else if ((window.location.href.match('manipulated.html') != null)) {
+  		alert("page under construction")
+  		csvSetup(csvManipulated);
+  		noNewRows = false;
+   		imageArraySetup();
   	}
 };
 
@@ -54,6 +65,7 @@ function openPhotography(){
 	}else {
 		window.location.href = "../photography.html";
 	}
+
 }
 
 function scrollTop(){
@@ -253,7 +265,12 @@ function newRowCheck(){
 	}
 }
 // Below is code for the portrait section or generic photo wall implementation
+var docLoc
 function newRow(amount){
+	docLoc = document.location;
+	docLoc = docLoc.toString();
+	docLoc = docLoc.slice(58, -5);
+	//console.log("image location = "+docLoc + "images/");
 	var columns = 4;
 	if(amount == 0){
 		return;
@@ -288,9 +305,9 @@ function newRow(amount){
 		image[i] = document.createElement('img');
 		image[i].setAttribute("class", "RowIMG");
 		if((i+columns*imgRowCounter) > parseInt(dimensions[csvPortSplit1.length-1][0].slice(0,-2))){ //If image would be beyond what we have in array
-			image[i].src = "images/imgArray1_1.jpg"; //FILE NOT FOUND ERROR AVOIDANCE, shouldn't happen anymore but just in case
+			image[i].src = docLoc + "Images/imgArray1_1.jpg"; //FILE NOT FOUND ERROR AVOIDANCE, shouldn't happen anymore but just in case
 		}else{
-			image[i].src = "images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
+			image[i].src = docLoc + "Images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
 		}
 		indiv[i].appendChild(image[i]);
 		vignette[i] = document.createElement('div');
@@ -324,6 +341,7 @@ function imgFullscreen(div){
 	imgSource = imgSource.slice(0, -4);
 	nextImageSource = (imgSource + "_" + 2 + ".jpg");
 	imgSource = (imgSource + "_" + 1 + ".jpg");
+	//console.log(imgSource);
 
 	var fullscreenDiv = document.createElement('div');
 	fullscreenDiv.setAttribute("class", "fullscreenDiv");
@@ -348,16 +366,19 @@ function imgFullscreen(div){
 	var imgFull = document.createElement('img');
 	imgFull.setAttribute("class", "imgFull");
 	
-	imgFull.src = imgSource;
+	imgFull.src = imgSource; //remove the .jpg
 	var tempsrc = imgSource.slice(0, -4);
-	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
-	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(-3); //have to slice from beginning in order to account for double digits
+	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING  MAy BE UNNECESSARY NOW THAT I SLICE ALL BUT LAST 3 IMPORTANT LETTERs
 	var tempDimensions;
+	//console.log(tempsrc);
+	//console.log(dimensions[4][0]);
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
 			break;
 		}
 		if(dimensions[i][0] == tempsrc){
+			//console.log("working!");
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
 			var deets = dimensions[i][3];
@@ -428,8 +449,8 @@ function nextImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
 
-	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
-	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(-3); //have to slice from beginning in order to account for double digits
+	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
@@ -476,8 +497,8 @@ function previousImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv); //nextSrc is global and gets updated by this
 
-	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
-	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(-3); //have to slice from beginning in order to account for double digits
+	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
@@ -590,8 +611,11 @@ for (x = 0; x < 100; x++){
 
 var csvPortSplit1;
 var csvPortraits = "1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m $Shutter Speed: 1/60s$Aperature: f/5.6 $ISO: 400|1_2,2 of 4,2560,1696,2 of 4$Editing Time: <30m $Shutter Speed: 1/80s $Aperature: f/5.6 $ISO: 200 |1_3,3 of 4,2560,1696,3 of 4$Editing Time: <30m $Shutter Speed: 1/60s $Aperature: f/4.8 $ISO: 400|1_4,4 of 4,2560,1696,4 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/5.6 $ISO: 100|2_1,1 of 6,2560,1949,1 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_2,2 of 6,2560,2255,2 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_3,3 of 6,2560,2139,3 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_4,4 of 6,2560,1696,4 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_5,5 of 6,2560,1822,5 of 6$Editing Time: ~2hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_6,6 of 6,2560,3865,6 of 6$Editing Time: ~4hr $Shutter Speed: 1/125s $Aperature: f/4 $ISO: 640 |3_1,1 of 4,2560,2937,1 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_2,2 of 4,2560,4417,2 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 400 |3_3,3 of 4,2560,2508,3 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_4,4 of 4,2560,3531,4 of 4$Editing Time: ~30m $Shutter Speed: 1/200s $Aperature: f/4 $ISO: 100|4_1,1 of 3,2560,1859,1 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4 $ISO: 800 |4_2,2 of 3,2560,1909,2 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4.5 $ISO: 800 |4_3,3 of 3,1583,3042,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4.8 $ISO: 500 |5_1,1 of 3,2560,2885,1 of 3$Editing Time: ~45m $Shutter Speed: 1/160s $Aperature: f/4 $ISO: 400|5_2,2 of 3,2560,3063,2 of 3$Editing Time: ~1hr $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 800 |5_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4 $ISO: 100 |6_1,1 of 2,2560,1696,1 of 2$Editing Time: ~45m $Shutter Speed: 1/800s $Aperature: f/5.6 $ISO: 640|6_2,2 of 2,2560,4436,2 of 2$Editing Time: ~30m $Shutter Speed: 1/640s $Aperature: f/5.6 $ISO: 640 |7_1,1 of 3,2560,1763,1 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/5.6 $ISO: 400 |7_2,2 of 3,2560,1676,2 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/4.5 $ISO: 400|7_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/1250s $Aperature: f/5 $ISO: 400 |8_1,1 of 1,2560,1911,1 of 1$Editing Time: ~45m $Shutter Speed: 1/25s $Aperature: f/14 $ISO: 500 |9_1,1 of 3,2560,2545,1 of 3$Editing Time: ~1hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_2,2 of 3,2560,2545,2 of 3$Editing Time: ~8hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_3,3 of 3,2308,2311,3 of 3$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_1,1 of 2,2560,1913,1 of 2$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_2,2 of 2,2560,2070,2 of 2$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/5.3 $ISO: 400 ";
-function csvSetup(){
-	csvPortSplit1 = csvPortraits.split("|");
+var csvRetouching = "1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m $Shutter Speed: 1/60s$Aperature: f/5.6 $ISO: 400|1_2,2 of 4,2560,1696,2 of 4$Editing Time: <30m $Shutter Speed: 1/80s $Aperature: f/5.6 $ISO: 200 |1_3,3 of 4,2560,1696,3 of 4$Editing Time: <30m $Shutter Speed: 1/60s $Aperature: f/4.8 $ISO: 400|1_4,4 of 4,2560,1696,4 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/5.6 $ISO: 100|2_1,1 of 6,2560,1949,1 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_2,2 of 6,2560,2255,2 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_3,3 of 6,2560,2139,3 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_4,4 of 6,2560,1696,4 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_5,5 of 6,2560,1822,5 of 6$Editing Time: ~2hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_6,6 of 6,2560,3865,6 of 6$Editing Time: ~4hr $Shutter Speed: 1/125s $Aperature: f/4 $ISO: 640 |3_1,1 of 4,2560,2937,1 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_2,2 of 4,2560,4417,2 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 400 |3_3,3 of 4,2560,2508,3 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_4,4 of 4,2560,3531,4 of 4$Editing Time: ~30m $Shutter Speed: 1/200s $Aperature: f/4 $ISO: 100|4_1,1 of 3,2560,1859,1 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4 $ISO: 800 |4_2,2 of 3,2560,1909,2 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4.5 $ISO: 800 |4_3,3 of 3,1583,3042,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4.8 $ISO: 500 |5_1,1 of 3,2560,2885,1 of 3$Editing Time: ~45m $Shutter Speed: 1/160s $Aperature: f/4 $ISO: 400|5_2,2 of 3,2560,3063,2 of 3$Editing Time: ~1hr $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 800 |5_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4 $ISO: 100 |6_1,1 of 2,2560,1696,1 of 2$Editing Time: ~45m $Shutter Speed: 1/800s $Aperature: f/5.6 $ISO: 640|6_2,2 of 2,2560,4436,2 of 2$Editing Time: ~30m $Shutter Speed: 1/640s $Aperature: f/5.6 $ISO: 640 |7_1,1 of 3,2560,1763,1 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/5.6 $ISO: 400 |7_2,2 of 3,2560,1676,2 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/4.5 $ISO: 400|7_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/1250s $Aperature: f/5 $ISO: 400 |8_1,1 of 1,2560,1911,1 of 1$Editing Time: ~45m $Shutter Speed: 1/25s $Aperature: f/14 $ISO: 500 |9_1,1 of 3,2560,2545,1 of 3$Editing Time: ~1hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_2,2 of 3,2560,2545,2 of 3$Editing Time: ~8hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_3,3 of 3,2308,2311,3 of 3$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_1,1 of 2,2560,1913,1 of 2$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_2,2 of 2,2560,2070,2 of 2$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/5.3 $ISO: 400 ";
+var csvManipulated = "1_1,1 of 4,2560,1836,1 of 4$Editing Time: ~45m $Shutter Speed: 1/60s$Aperature: f/5.6 $ISO: 400|1_2,2 of 4,2560,1696,2 of 4$Editing Time: <30m $Shutter Speed: 1/80s $Aperature: f/5.6 $ISO: 200 |1_3,3 of 4,2560,1696,3 of 4$Editing Time: <30m $Shutter Speed: 1/60s $Aperature: f/4.8 $ISO: 400|1_4,4 of 4,2560,1696,4 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/5.6 $ISO: 100|2_1,1 of 6,2560,1949,1 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_2,2 of 6,2560,2255,2 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_3,3 of 6,2560,2139,3 of 6$Editing Time: ~3hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_4,4 of 6,2560,1696,4 of 6$Editing Time: ~1hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500 |2_5,5 of 6,2560,1822,5 of 6$Editing Time: ~2hr $Shutter Speed: 1/250s $Aperature: f/4 $ISO: 500|2_6,6 of 6,2560,3865,6 of 6$Editing Time: ~4hr $Shutter Speed: 1/125s $Aperature: f/4 $ISO: 640 |3_1,1 of 4,2560,2937,1 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_2,2 of 4,2560,4417,2 of 4$Editing Time: <30m $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 400 |3_3,3 of 4,2560,2508,3 of 4$Editing Time: ~45m $Shutter Speed: 1/320s $Aperature: f/4.2 $ISO: 100|3_4,4 of 4,2560,3531,4 of 4$Editing Time: ~30m $Shutter Speed: 1/200s $Aperature: f/4 $ISO: 100|4_1,1 of 3,2560,1859,1 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4 $ISO: 800 |4_2,2 of 3,2560,1909,2 of 3$Editing Time: <30m $Shutter Speed: 1/320s $Aperature: f/4.5 $ISO: 800 |4_3,3 of 3,1583,3042,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4.8 $ISO: 500 |5_1,1 of 3,2560,2885,1 of 3$Editing Time: ~45m $Shutter Speed: 1/160s $Aperature: f/4 $ISO: 400|5_2,2 of 3,2560,3063,2 of 3$Editing Time: ~1hr $Shutter Speed: 1/100s $Aperature: f/4 $ISO: 800 |5_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/4 $ISO: 100 |6_1,1 of 2,2560,1696,1 of 2$Editing Time: ~45m $Shutter Speed: 1/800s $Aperature: f/5.6 $ISO: 640|6_2,2 of 2,2560,4436,2 of 2$Editing Time: ~30m $Shutter Speed: 1/640s $Aperature: f/5.6 $ISO: 640 |7_1,1 of 3,2560,1763,1 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/5.6 $ISO: 400 |7_2,2 of 3,2560,1676,2 of 3$Editing Time: <30m $Shutter Speed: 1/2000s $Aperature: f/4.5 $ISO: 400|7_3,3 of 3,2560,1696,3 of 3$Editing Time: <30m $Shutter Speed: 1/1250s $Aperature: f/5 $ISO: 400 |8_1,1 of 1,2560,1911,1 of 1$Editing Time: ~45m $Shutter Speed: 1/25s $Aperature: f/14 $ISO: 500 |9_1,1 of 3,2560,2545,1 of 3$Editing Time: ~1hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_2,2 of 3,2560,2545,2 of 3$Editing Time: ~8hr $Shutter Speed: 1/800s $Aperature: f/3.5 $ISO: 400|9_3,3 of 3,2308,2311,3 of 3$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_1,1 of 2,2560,1913,1 of 2$Editing Time: <30m $Shutter Speed: 1/1600s $Aperature: f/3.5 $ISO: 400|10_2,2 of 2,2560,2070,2 of 2$Editing Time: <30m $Shutter Speed: 1/500s $Aperature: f/5.3 $ISO: 400 ";
+
+function csvSetup(csvChoice){
+	csvPortSplit1 = csvChoice.split("|");
 	var csvPortSplit2;
 
 	for(i = 0; i <= csvPortSplit1.length; i++){

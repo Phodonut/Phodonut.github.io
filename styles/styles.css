@@ -27,6 +27,19 @@
 
 }
 
+.subPageTitles{
+	pointer-events: none;
+	position: absolute;
+	opacity: 1;
+	width: 100%;
+	top: 0px;
+	text-align: center;
+	color: #f2f2f2;
+	font-size: calc(16px + 1vw);
+	padding-top: 10px;
+	text-decoration: none;
+}
+
 .columnChoiceONE{
 	pointer-events: none;
 	opacity: 0;
