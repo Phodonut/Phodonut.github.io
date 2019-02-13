@@ -271,7 +271,7 @@ function newRow(amount){
 	docLoc = docLoc.toString();
 	//docLoc = docLoc.slice(58, -5);  //THIS IS FOR DESKTOP
 	docLoc = docLoc.slice(39, -5);  //THIS IS FOR BROWSER
-	docLoc = docLoc.splice(5); //this gets the correct image location with shortened file paths
+	docLoc = docLoc.slice(0,(docLoc.length-5)); //this gets the correct image location with shortened file paths
 	console.log("image location = "+ docLoc + "images/");
 	//console.log("test4");
 	var columns = 4;
