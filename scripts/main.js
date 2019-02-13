@@ -308,6 +308,7 @@ function newRow(amount){
 		console.log("Must be less than: " + (i+columns*imgRowCounter));
 		if((i+columns*imgRowCounter) > parseInt(dimensions[csvPortSplit1.length-1][0].slice(0,-2))){ //If image would be beyond what we have in array
 			image[i].src = docLoc + "Images/imgArray1_1.jpg"; //FILE NOT FOUND ERROR AVOIDANCE, shouldn't happen anymore but just in case
+			console.log("success?");
 		}else{
 			image[i].src = docLoc + "Images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
 			console.log("error 404 image not found branch");
