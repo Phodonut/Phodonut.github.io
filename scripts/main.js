@@ -378,11 +378,12 @@ function imgFullscreen(div){
 	//console.log(tempsrc);
 	//console.log(dimensions[4][0]);
 	for(i = 0; i <= dimensions.length; i++){
+		console.log("dimensions[i][0] : " + dimensions[i][0]);
+		console.log("tempsrc : " + tempsrc);
 		if(dimensions[i][0] == undefined){
 			break;
 		}
 		if(dimensions[i][0] == tempsrc){
-			//console.log("working!");
 			var width = dimensions[i][1];
 			var height = dimensions[i][2];
 			var deets = dimensions[i][3];
