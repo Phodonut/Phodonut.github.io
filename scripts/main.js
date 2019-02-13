@@ -458,7 +458,7 @@ function nextImageArrow(containingDiv){
 
 	var tempsrc = imgSource.slice(0, -4);
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
-	var tempsrc = tempsrc.slice(62); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(54 + docLoc.length); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
@@ -507,7 +507,7 @@ function previousImageArrow(containingDiv){
 
 	var tempsrc = imgSource.slice(0, -4);
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
-	var tempsrc = tempsrc.slice(62); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(54 + docLoc.length); //NEED LESS WHEN ON BROWSER HOSTING
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
