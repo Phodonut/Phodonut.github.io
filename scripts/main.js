@@ -374,6 +374,7 @@ function imgFullscreen(div){
 	var tempsrc = imgSource.slice(0, -4);
 	var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	//var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING 
+	console.log(tempsrc);
 	var tempDimensions;
 
 	for(i = 0; i <= dimensions.length; i++){
