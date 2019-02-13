@@ -272,7 +272,7 @@ function newRow(amount){
 	//docLoc = docLoc.slice(58, -5);  //THIS IS FOR DESKTOP
 	docLoc = docLoc.slice(39, -5);  //THIS IS FOR BROWSER
 	//this gets the correct image location with shortened file paths
-	console.log("image location = "+ docLoc + "images/");
+	//("image location = "+ docLoc + "images/");
 	//console.log("test4");
 	var columns = 4;
 	if(amount == 0){
@@ -307,11 +307,11 @@ function newRow(amount){
 		div.appendChild(indiv[i]);
 		image[i] = document.createElement('img');
 		image[i].setAttribute("class", "RowIMG"); //CURRENTLY THROWING ERROR File Not Found path
-		console.log("info 1: " + dimensions[csvPortSplit1.length-1][0].slice(0,-2));  //console logging test if first # of image source isn't beyond what array has been set up for?
-		console.log("Must be less than: " + (i+columns*imgRowCounter));
+		//console.log("info 1: " + dimensions[csvPortSplit1.length-1][0].slice(0,-2));  //console logging test if first # of image source isn't beyond what array has been set up for?
+		//console.log("Must be less than: " + (i+columns*imgRowCounter));
 		if((i+columns*imgRowCounter) > parseInt(dimensions[csvPortSplit1.length-1][0].slice(0,-2))){ //If image would be beyond what we have in array
 			image[i].src = docLoc + "Images/imgArray1_1.jpg"; //FILE NOT FOUND ERROR AVOIDANCE, shouldn't happen anymore but just in case
-			console.log("Failed");
+			//console.log("Failed");
 		}else{
 			image[i].src = docLoc + "Images/" + imgArray[(i+columns*imgRowCounter)] + ".jpg";  //images/imgArray#.jpg
 		}
@@ -347,7 +347,7 @@ function imgFullscreen(div){
 	imgSource = imgSource.slice(0, -4);
 	nextImageSource = (imgSource + "_" + 2 + ".jpg");
 	imgSource = (imgSource + "_" + 1 + ".jpg");
-	console.log(imgSource);
+	//console.log(imgSource);
 
 	var fullscreenDiv = document.createElement('div');
 	fullscreenDiv.setAttribute("class", "fullscreenDiv");
@@ -376,12 +376,12 @@ function imgFullscreen(div){
 	var tempsrc = imgSource.slice(0, -4);
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	var tempsrc = tempsrc.slice(54 + docLoc.length); //NEED LESS WHEN ON BROWSER HOSTING
-	console.log("test 3" +tempsrc); //NUMBERS WILL DEPEND ON BROWSER LOCATION
+	//console.log("test 3" +tempsrc); //NUMBERS WILL DEPEND ON BROWSER LOCATION
 	var tempDimensions;
 
 	for(i = 0; i <= dimensions.length; i++){
-		console.log("dimensions[i][0] : " + dimensions[i][0]);
-		console.log("tempsrc : " + tempsrc);
+		//console.log("dimensions[i][0] : " + dimensions[i][0]);
+		//console.log("tempsrc : " + tempsrc);
 		if(dimensions[i][0] == undefined){
 			break;
 		}
@@ -604,7 +604,7 @@ function imgDisplayDetails(width, height, deets){
 
 function popBubbles(){
 	//below code stops event propogation (inside div onclick only, stops before outer div);
-	console.log("testing");
+	//("testing");
 	if (!e) var e = window.event;
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
