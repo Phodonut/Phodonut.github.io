@@ -345,7 +345,7 @@ function imgFullscreen(div){
 	imgSource = imgSource.slice(0, -4);
 	nextImageSource = (imgSource + "_" + 2 + ".jpg");
 	imgSource = (imgSource + "_" + 1 + ".jpg");
-	//console.log(imgSource);
+	console.log(imgSource);
 
 	var fullscreenDiv = document.createElement('div');
 	fullscreenDiv.setAttribute("class", "fullscreenDiv");
@@ -374,7 +374,7 @@ function imgFullscreen(div){
 	var tempsrc = imgSource.slice(0, -4);
 	//var tempsrc = tempsrc.slice(73); //have to slice from beginning in order to account for double digits
 	var tempsrc = tempsrc.slice(54); //NEED LESS WHEN ON BROWSER HOSTING 
-	//console.log(tempsrc);
+	console.log("test 3" +tempsrc);
 	var tempDimensions;
 
 	for(i = 0; i <= dimensions.length; i++){
