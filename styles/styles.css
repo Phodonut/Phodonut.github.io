@@ -19,6 +19,7 @@
 .topnav button:hover {
 	background-color: #efefe1;
 	color: #111111;
+	cursor: pointer;
 }
 .center {
 	display: block;
@@ -267,14 +268,11 @@ body{
 
 .vignette:hover{
 	box-shadow: inset 0 0 60px #efefe1;
+	cursor: pointer;
 }
 
 
-/* Portraits Subpage  NOTES FOR ANOTHER DAY: The spacing is messed up because the height
-doesn't include the margin, meaning it stretches beyond the screen, and everything else
-is adjusted accordingly. Possibly solution, shift margin to navbar, and change the VH to
-account for that pixel change. Allowing the height of the div to remain accurate? Or at
-least to not care? Idk, but problem is there; */  
+/* Portraits Subpage */  
 
 .PortraitContainer{
 	transform: translateY(-.75%);
@@ -339,7 +337,7 @@ least to not care? Idk, but problem is there; */
 }
 
 .imgFull{
-	position: relative;
+	position: absolute;
 	float: left;
 	 /* height: 90%;  Before object-fit, the old way*/
 	height: 100%;
@@ -348,11 +346,17 @@ least to not care? Idk, but problem is there; */
     top: 0px;
     left: 0px;
 
+    transition: opacity .5s ease-in-out;
+
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+}
+
+.imgFull:hover{
+	opacity: 0.01;
 }
 
 .imgFullMobile{
