@@ -1,5 +1,5 @@
-stringCutAmount = 73;// IF ON DESKTOP
-// stringCutAmount = 54;// IF ON BROWSER 
+//stringCutAmount = 73;// IF ON DESKTOP
+stringCutAmount = 54;// IF ON BROWSER 
 
 var col1SRC = ["images/1col1.jpg", "images/2col1.jpg", "images/3col1.jpg", "images/4col1.jpg"];
 var col2SRC = ["images/1col2.jpg", "images/2col2.jpg", "images/3col2.jpg", "images/4col2.jpg"];
