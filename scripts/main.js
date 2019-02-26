@@ -1,9 +1,15 @@
+stringCutAmount = 73;// IF ON DESKTOP
+// stringCutAmount = 54;// IF ON BROWSER 
+
 var col1SRC = ["images/1col1.jpg", "images/2col1.jpg", "images/3col1.jpg", "images/4col1.jpg"];
 var col2SRC = ["images/1col2.jpg", "images/2col2.jpg", "images/3col2.jpg", "images/4col2.jpg"];
 var col3SRC = ["images/1col3.jpg", "images/2col3.jpg", "images/3col3.jpg", "images/4col3.jpg"];
 var noNewRows = false;
 var docHeight = getHeight();
 var docWidth = getWidth();
+var is_fine = matchMedia('(pointer:fine)').matches;
+var is_coarse = matchMedia('(pointer:coarse)').matches;
+var globalToggle = false;
 window.onload = function(){
 	navbarSticky()
 	if (window.location.href.match('photography.html') != null) {
@@ -125,22 +131,18 @@ function preload(index){
 	}
 }
 
-function colFadeReset(){
-
-}
-
-function colFadeIn(index, opacity, col){
+function colFadeIn(index, opacity, col){ // going to try to fix without fade function
 	if(index == 1 && col < 4){
 		switch(col){
 			case 1:
 				//alert("Going to now fade in index 1");
-				fadeElement(document.getElementById("1col1"), 0, 1, 1200);
+				document.getElementById("1col1").style.opacity = 1;
 				break;
 			case 2:
-				fadeElement(document.getElementById("1col2"), 0, 1, 1200);
+				document.getElementById("1col2").style.opacity = 1;
 				break;
 			case 3:
-				fadeElement(document.getElementById("1col3"), 0, 1, 1200);
+				document.getElementById("1col3").style.opacity = 1;
 				window.setTimeout(preload.bind(null,index+1),1500);
 				window.setTimeout(colFadeIn.bind(null,(index+1),1,1),4500);
 				break;
@@ -151,13 +153,13 @@ function colFadeIn(index, opacity, col){
 		switch(col){
 			case 1:
 				//alert("Going to now fade in index 2, preload index 3 after");
-				fadeElement(document.getElementById("2col1"), 0, 1, 1200);
+				document.getElementById("2col1").style.opacity = 1;
 				break;
 			case 2:
-				fadeElement(document.getElementById("2col2"), 0, 1, 1200);
+				document.getElementById("2col2").style.opacity = 1;
 				break;
 			case 3:
-				fadeElement(document.getElementById("2col3"), 0, 1, 1200);
+				document.getElementById("2col3").style.opacity = 1;
 				window.setTimeout(preload.bind(null,index+1),1500);
 				window.setTimeout(colFadeIn.bind(null,(index+1),1,1),4500);
 				break;
@@ -168,13 +170,13 @@ function colFadeIn(index, opacity, col){
 		switch(col){
 			case 1:
 				//alert("Going to now fade in index 3, preload index 4 after");
-				fadeElement(document.getElementById("3col1"), 0, 1, 1200);
+				document.getElementById("3col1").style.opacity = 1;
 				break;
 			case 2:
-				fadeElement(document.getElementById("3col2"), 0, 1, 1200);
+				document.getElementById("3col2").style.opacity = 1;
 				break;
 			case 3:
-				fadeElement(document.getElementById("3col3"), 0, 1, 1200);
+				document.getElementById("3col3").style.opacity = 1;
 				window.setTimeout(preload.bind(null,index+1),1500);
 				window.setTimeout(colFadeIn.bind(null,(index+1),1,1),4500);
 				break;
@@ -185,37 +187,31 @@ function colFadeIn(index, opacity, col){
 		switch(col){
 			case 1:
 				//alert("Going to now fade in index 4");
-				fadeElement(document.getElementById("4col1"), 0, 1, 1200);
+				document.getElementById("4col1").style.opacity = 1;
 				break;
 			case 2:
-				fadeElement(document.getElementById("4col2"), 0, 1, 1200);
+				document.getElementById("4col2").style.opacity = 1;
 				break;
 			case 3:
-				fadeElement(document.getElementById("4col3"), 0, 1, 1200);
+				document.getElementById("4col3").style.opacity = 1;
+				
 				window.setTimeout(preload.bind(null,index+1),1500);
+				window.setTimeout(colFadeReset, 2000);  //This is the function directly below, which changes opacity to 0 of middle indexed columns
 				window.setTimeout(colFadeIn.bind(null,(index+1),1,1),4500);
 				break;
-
 		}
 		window.setTimeout(colFadeIn.bind(null,4,1,(col+1)),800);
 	} else if (index == 5 && col < 4){
 		switch(col){
 			case 1:
-				//alert("Reseting index 2 and 3 to opacity 0");
-				document.getElementById("2col1").style.opacity = 0.01;
-				document.getElementById("3col1").style.opacity = 0.01;
-				document.getElementById("2col2").style.opacity = 0.01;
-				document.getElementById("3col2").style.opacity = 0.01;
-				document.getElementById("2col3").style.opacity = 0.01;
-				document.getElementById("3col3").style.opacity = 0.01;
-				//alert("Fading index 4 down to index 1");
-				fadeElement(document.getElementById("4col1"), 1, 0.01, 1200);
+				document.getElementById("4col1").style.opacity = 0.01;
+
 				break;
 			case 2:
-				fadeElement(document.getElementById("4col2"), 1, 0.01, 1200);
+				document.getElementById("4col2").style.opacity = 0.01;
 				break;
 			case 3:
-				fadeElement(document.getElementById("4col3"), 1, 0.01, 1200);
+				document.getElementById("4col3").style.opacity = 0.01;
 				allLoaded = true;
 				window.setTimeout(colFadeIn.bind(null,((index+1)%4),1,1),4500);
 				break;
@@ -226,7 +222,17 @@ function colFadeIn(index, opacity, col){
 
 }
 
-function fadeElement(el, start, end, time){
+function colFadeReset(){
+	//alert("Reseting index 2 and 3 to opacity 0");
+	document.getElementById("2col1").style.opacity = 0.01;
+	document.getElementById("3col1").style.opacity = 0.01;
+	document.getElementById("2col2").style.opacity = 0.01;
+	document.getElementById("3col2").style.opacity = 0.01;
+	document.getElementById("2col3").style.opacity = 0.01;
+	document.getElementById("3col3").style.opacity = 0.01;
+}
+
+function fadeElement(el, start, end, time){  //MAY NOT EVEN NEED, DELETE
 	var range = end - start;
 	var increasing = end>start;
 	var steps = time/20;
@@ -267,8 +273,7 @@ var docLoc
 function newRow(amount){
 	docLoc = document.location;
 	docLoc = docLoc.toString();
-	//docLoc = docLoc.slice(58, -5);  //THIS IS FOR DESKTOP
-	docLoc = docLoc.slice(39, -5);  //THIS IS FOR BROWSER
+	docLoc = docLoc.slice((stringCutAmount - 15), -5); //SLICE AREA
 	//this gets the correct image location with shortened file paths
 	//("image location = "+ docLoc + "images/");
 	var columns = 4;
@@ -344,8 +349,6 @@ function imgFullscreen(div){
 	imgSource = (imgSource + "_" + 1 + ".jpg");
 	//console.log(imgSource);
 
-	//if docLoc != portraits, then get all the next possible images and load behind front image (STILL NEED TO PUT HERE)
-
 	var fullscreenDiv = document.createElement('div');
 	fullscreenDiv.setAttribute("class", "fullscreenDiv");
 	fullscreenDiv.setAttribute("id", "activeFullscreen");
@@ -369,8 +372,7 @@ function imgFullscreen(div){
 	
 	imgFull.src = imgSource; //remove the .jpg
 	var tempsrc = imgSource.slice(0, -4);
-	//var tempsrc = tempsrc.slice(73 + docLoc.length); //have to slice from beginning in order to account for double digits
-	var tempsrc = tempsrc.slice(54 + docLoc.length); //NEED LESS WHEN ON BROWSER HOSTING
+	var tempsrc = tempsrc.slice(stringCutAmount + docLoc.length); //SLICE AREA
 	var tempDimensions;
 
 	for(i = 0; i <= dimensions.length; i++){
@@ -392,8 +394,17 @@ function imgFullscreen(div){
 	imgContainer.style.marginLeft = tempDimensions[2] + "px";
 
 	if(docLoc != "portraits"){
+
 		var imgFullNext = document.createElement('img'); //appears first without z index, for debugging purposes
 		imgFullNext.setAttribute("class", "imgFull");
+
+		imgFull.setAttribute("id", "imgFull");
+		if(is_coarse){ //touch screen, give it an onclick toggle fade
+			globalToggle = false;
+			imgFull.setAttribute("onclick", "toggleSwitchFade()");
+			imgFull.style.opacity = 1;
+		}
+
 		imgFullNext.setAttribute("onclick", "popBubbles");
 		imgFullNext.setAttribute("style", ("z-index: " + 9));
 		imgFull.setAttribute("style", ("z-index: " + 10));
@@ -401,8 +412,11 @@ function imgFullscreen(div){
 		imgContainer.appendChild(imgFullNext);
 	}
 
-	imgFull.setAttribute("onclick", "popBubbles");
+	//imgFull.setAttribute("onclick", "popBubbles");
 	imgContainer.appendChild(imgFull);
+	if(is_coarse){
+		imgFull.style.opacity = 1; //doing this is necessary for fade function to work for some reason, but messes with hover, so separating to mobile only detection system
+	}
 
 	var arrowContainerR = document.createElement('div');
 	arrowContainerR.setAttribute("class", "arrowContainerR");
@@ -461,8 +475,8 @@ function nextImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv);
 
-	//var tempsrc = tempsrc.slice(73 + docLoc.length); //have to slice from beginning in order to account for double digits
-	tempsrc = tempsrc.slice(54 + docLoc.length); //NEED LESS WHEN ON BROWSER HOSTING
+	tempsrc = tempsrc.slice(stringCutAmount + docLoc.length); //SLICE AREA
+
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
@@ -509,8 +523,7 @@ function previousImageArrow(containingDiv){
 	nextSrc = (nextSrc + ".jpg");
 	checkImageBeyond(initSrc, nextSrc, containingDiv); //nextSrc is global and gets updated by this
 
-	//var tempsrc = tempsrc.slice(73 + docLoc.length); //have to slice from beginning in order to account for double digits
-	tempsrc = tempsrc.slice(54 + docLoc.length); //NEED LESS WHEN ON BROWSER HOSTING
+	tempsrc = tempsrc.slice(stringCutAmount + docLoc.length); //SLICE AREA
 	var tempDimensions;
 	for(i = 0; i <= dimensions.length; i++){
 		if(dimensions[i][0] == undefined){
@@ -587,15 +600,25 @@ function changeImage(imageSrc, containingDiv){
 	img.src = imageSrc;
 }
 
-function imgDisplayDetails(width, height, deets){ 
+function imgDisplayDetails(width, height, deets){
+	globalToggle = true; //resets for fade function before in use
 	var imgContainer = document.getElementById("activeFullscreen");
 	imgContainer = imgContainer.childNodes[2];
 
 	var descriptionDiv = document.createElement('div');
 	var descriptionLines = [];
 	descriptionDiv.setAttribute("class", "descriptionOverlayDiv");
-	descriptionDiv.setAttribute("onclick", "popBubbles");
+	descriptionDiv.setAttribute("id", "detailDiv");
+
+	if(is_coarse){
+		descriptionDiv.setAttribute("onclick", "detailFade()");
+	}
+	
+
 	imgContainer.appendChild(descriptionDiv);
+	if(is_coarse){
+		descriptionDiv.style.opacity = 0.01;
+	}
 	var detailedDeets = deets.split("$");
 
 	for(i = 0; i < detailedDeets.length; i++){
@@ -606,6 +629,29 @@ function imgDisplayDetails(width, height, deets){
 		descriptionDiv.appendChild(descriptionLines[i]);
 
 	}
+}
+
+function detailFade(){
+	detail = document.getElementById("detailDiv");
+	if(globalToggle){
+		detail.style.opacity = 1;
+		detail.style.backgroundColor = "rgba(0,0,0,.55)";
+	}else{
+		detail.style.opacity = 0;
+		detail.style.backgroundColor = "rgba(0,0,0,0)";
+	}
+	globalToggle = !globalToggle;
+
+}
+
+function toggleSwitchFade(){ //used to use fade function, now using css transition for efficiency
+	image = document.getElementById("imgFull");
+	if(globalToggle){
+		image.style.opacity = 1;
+	}else{
+		image.style.opacity = 0;
+	}
+	globalToggle = !globalToggle;
 }
 
 function popBubbles(){
