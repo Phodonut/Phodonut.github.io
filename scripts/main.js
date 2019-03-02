@@ -10,6 +10,7 @@ var docWidth = getWidth();
 var is_fine = matchMedia('(pointer:fine)').matches;
 var is_coarse = matchMedia('(pointer:coarse)').matches;
 var globalToggle = false;
+var globalFadeCounter = 0;
 window.onload = function(){
 	navbarSticky()
 	if (window.location.href.match('photography.html') != null) {
@@ -341,7 +342,7 @@ function imageArraySetup(){
 
 
 var imageCounter = 0;
-function imgFullscreen(div){
+function imgFullscreen(div){ //original/final
 
 	var imgSource = div.getElementsByTagName('img')[0].src;
 	imgSource = imgSource.slice(0, -4);
@@ -410,6 +411,37 @@ function imgFullscreen(div){
 		imgFull.setAttribute("style", ("z-index: " + 10));
 		imgFullNext.src = nextImageSource;
 		imgContainer.appendChild(imgFullNext);
+
+		//TapFade current stage display for user info
+		var overlayOriginal = document.createElement('div');
+		overlayOriginal.setAttribute("class", "typeOverlay");
+		var overlayFinal = document.createElement('div');
+		overlayFinal.setAttribute("class", "typeOverlay");
+		overlayFinal.innerText = "Post-Edit"; 
+		overlayOriginal.innerText = "Pre-Edit";
+		var fontSize = imgContainer.offsetHeight;
+		fontSize = fontSize*.1;
+
+		overlayFinal.setAttribute("style", ("font-size: " + fontSize +"px"));
+		overlayFinal.setAttribute("id", "overlayFinal");
+		overlayOriginal.setAttribute("style", ("font-size: " + fontSize + "px"));
+		overlayOriginal.setAttribute("id", "overlayOriginal");
+
+		if(is_fine){
+			imgFull.setAttribute
+			imgFull.setAttribute("onmouseover", "overlayFadeOutFine()");
+			imgFull.setAttribute("onmouseout", "overlayFadeInFine()");
+		}
+
+		imgContainer.appendChild(overlayOriginal);
+		imgContainer.appendChild(overlayFinal);
+
+		overlayFinal.style.opacity = 1;
+		overlayFinal.style.backgroundColor = "rgba(0,0,0,.75)";
+		window.setTimeout(overlayFadeOut.bind(null, overlayFinal, globalFadeCounter), 500);
+
+		//end of tapFade current stage code
+
 	}
 
 	//imgFull.setAttribute("onclick", "popBubbles");
@@ -440,9 +472,26 @@ function imgFullscreen(div){
 }
 
 function deleteFullscreen(){
-	imageCounter = 0;;
+	imageCounter = 0;
+	globalFadeCounter = 1;
 	var el = document.getElementById("activeFullscreen");
 	el.parentNode.removeChild(el);
+}
+
+function overlayFadeOut(elementObj,counter){
+	if(globalFadeCounter == counter){
+		elementObj.style.opacity = 0;
+		elementObj.style.backgroundColor = "rgba(0,0,0,0)";
+	}
+}
+
+function overlayFadeIn(elementObj,counter){
+	if(counter < 4){
+		if(globalFadeCounter == counter){
+			elementObj.style.opacity = 1;
+			elementObj.style.backgroundColor = "rgba(0,0,0,.75)";
+		}
+	}
 }
 
 function nextImageArrow(containingDiv){
@@ -646,12 +695,39 @@ function detailFade(){
 
 function toggleSwitchFade(){ //used to use fade function, now using css transition for efficiency
 	image = document.getElementById("imgFull");
-	if(globalToggle){
+	overlayOriginal = document.getElementById("overlayOriginal");
+	overlayFinal = document.getElementById("overlayFinal");
+	globalFadeCounter += 1;
+	if(globalToggle){ //Final image
 		image.style.opacity = 1;
-	}else{
+		overlayFadeOut(overlayOriginal, globalFadeCounter);
+		overlayFadeIn(overlayFinal, globalFadeCounter);
+		window.setTimeout(overlayFadeOut.bind(null, overlayFinal, globalFadeCounter), 750);
+	}else{ //Original image
 		image.style.opacity = 0;
+		overlayFadeOut(overlayFinal, globalFadeCounter);
+		overlayFadeIn(overlayOriginal, globalFadeCounter);
+		window.setTimeout(overlayFadeOut.bind(null, overlayOriginal, globalFadeCounter), 750);
 	}
 	globalToggle = !globalToggle;
+}
+
+function overlayFadeOutFine(){
+	overlayOriginal = document.getElementById("overlayOriginal");
+	overlayFinal = document.getElementById("overlayFinal");
+	globalFadeCounter ++;
+	overlayFadeOut(overlayFinal, globalFadeCounter);
+	overlayFadeIn(overlayOriginal, globalFadeCounter);
+	window.setTimeout(overlayFadeOut.bind(null, overlayOriginal, globalFadeCounter), 750);
+}
+
+function overlayFadeInFine(){
+	overlayOriginal = document.getElementById("overlayOriginal");
+	overlayFinal = document.getElementById("overlayFinal");
+	globalFadeCounter ++;
+	overlayFadeOut(overlayOriginal, globalFadeCounter);
+	overlayFadeIn(overlayFinal, globalFadeCounter);
+	window.setTimeout(overlayFadeOut.bind(null, overlayFinal, globalFadeCounter), 750);
 }
 
 function popBubbles(){
