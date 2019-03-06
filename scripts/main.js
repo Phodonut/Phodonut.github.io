@@ -73,6 +73,13 @@ function openPhotography(){
 
 }
 
+function openGameDesign(){
+	window.location.href = "../gamedesign.html";
+}
+function openGameDesignFromSym(){
+	window.location.href = "../../../gamedesign.html";
+}
+
 function scrollTop(){
 	document.body.scrollTop=0;
 	document.documentElement.scrollTop=0;
@@ -473,7 +480,7 @@ function imgFullscreen(div){ //original/final
 
 function deleteFullscreen(){
 	imageCounter = 0;
-	globalFadeCounter = 1;
+	globalFadeCounter = 0;
 	var el = document.getElementById("activeFullscreen");
 	el.parentNode.removeChild(el);
 }

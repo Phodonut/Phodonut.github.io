@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Nado </title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type = "text/css" href="../styles/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+  <div id="nav" class="topnav">
+    <button onclick="openContact()"> Contact </button>
+     <button onclick="openGameDesign()" style = "float: left;"> Game Design </button>
+  </div>
+
+  <script src="../scripts/main.js"> </script>
+  <script
+    type="text/javascript"
+    src="/js/lib/dummy.js"
+    
+  ></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+
+  <style id="compiled-css" type="text/css">
+      #canvas {
+    border:3px solid black;
+    background-color: white;
+}
+  </style>
+
+
+  <!-- TODO: Missing CoffeeScript 2 -->
+
+  <script type="text/javascript">
+
+
+    window.onload=function(){
+      
+var cv = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+
+var	scoreTimerOG = 49,
+		scoreTimer = scoreTimerOG,
+    GameOver = false,
+    hitCounter = 0,
+    hitMax = 3,
+    score = 0,
+		width = 400,
+		height = 400,
+    topNado = .5*canvas.width,
+    botNado = .5*canvas.width,
+    elasticRatio = .01,		//smaller = slower
+    maxSpeed = 5,			//tornado bezier below
+    cp1x = 0,				//control point 1 x value
+    cp1y = 30,			//control point 1 y value
+    cp2x = 0,			//control point 2 x value
+    cp2y = 100,		//control point 2 Y value
+    cX = 0,			//1 These three defined in update
+    bX = 0, 		//2	Coefficients for equation of
+    aX = 0, 		//3 X points on line
+    t = 0,  //'Time' value, or percentage along line
+    Vcp1x = 0,				
+    Vcp1y = 300,		
+    Vcp2x = 0,		
+    Vcp2y = 330,			
+    VRcp1x = 0,				
+    VRcp1y = 300,		
+    VRcp2x = 0,		
+    VRcp2y = 330;
+    
+var BVcp1x = 0,
+    BVcp1y = 300,
+    BVcp2x = 0,
+    BVcp2y = 330,
+    BVRcp1x = 0,
+    BVRcp1y = 300,
+    BVRcp2x = 0,
+    BVRcp2y = 330;
+    
+var cloudCounter = 0,
+		cloudSpawnCounterOG = 200,
+		cloudSpawnCounter = cloudSpawnCounterOG,
+    cloudCenterX = 300,
+    cloudCenterY = 250,
+    cloudDelayOG = 2,
+    cloudDelay = cloudDelayOG,
+    cloudAccel = .02,
+    numCloudParticles = 30,
+    ignore = 300,
+    spawnClouds = false,
+    lifetimeOG = 200,
+    lifetime = lifetimeOG;
+
+function Cloud(x, y, lifetime){
+	this.x = x;
+  this.y = y;
+  this.lifetime = lifetime;
+  this.speed = -2;
+  this.radius = 2+ Math.random()*4;
+  this.cloudSpawnCounter = cloudSpawnCounterOG;
+}
+
+var clouds = new Array();
+
+function cloud_particle_system(cloudCounter){ //designed for 1 per call max
+   clouds.push(new Cloud(cloudCenterX + Math.random()*70, cloudCenterY+Math.random()*25,lifetime));
+}
+    
+var MemoryArray = new Array();
+
+MemoryArray[1] = {leftValleyTopTarget:100, rightValleyTopTarget:300};
+MemoryArray[2] = {leftValleyTopTarget:100, rightValleyTopTarget:300};
+
+var counterValleyOG = 100,
+		counterValley = 100,
+    leftValleyTopTarget = MemoryArray[1].leftValleyTopTarget,
+    leftValleyTop = MemoryArray[1].leftValleyTopTarget-40,
+    leftValleyBottom = MemoryArray[1].leftValleyTopTarget-60,
+    rightValleyTopTarget = MemoryArray[1].rightValleyTopTarget,
+    rightValleyTop = MemoryArray[1].rightValleyTopTarget+40,
+    rightValleyBottom = MemoryArray[1].rightValleyTopTarget+60,
+    valleyElasticRatio = .015;
+    
+var behindLeftValleyTop =  MemoryArray[1].leftValleyTopTarget,
+		behindLeftValleyTopTarget = MemoryArray[1].leftValleyTopTarget,
+    behindLeftValleyBottom = MemoryArray[1].leftValleyTopTarget,
+    behindRightValleyTop = MemoryArray[1].rightValleyTopTarget,
+    behindRightValleyTopTarget = MemoryArray[1].rightValleyTopTarget,
+    behindRightValleyBottom = MemoryArray[1].rightValleyTopTarget;
+
+var center = 0,
+		numParticles = 200,
+    counter  = 0,
+    delayOG = 2,
+    delay = delayOG;
+    
+var grd1 = context.createRadialGradient(200,-230,10,200,60,300);
+		grd1.addColorStop(0,"#0000CC");
+		grd1.addColorStop(1,"#9999FF");
+   
+var grd2 = context.createRadialGradient(200,30,10,200,60,300);
+		grd2.addColorStop(0,"#BC9055");
+		grd2.addColorStop(1,"#D9C09E");
+    
+var tornadoCollisionX = 200,
+	  leftValleyCollisionX = 0,
+    rightValleyCollisionX = 400;
+
+function collisionUpdate(){
+	if(tornadoCollisionX-10 < leftValleyCollisionX || tornadoCollisionX+10 > rightValleyCollisionX){ //this checks valley collision
+  	GameOver = true;
+  }
+  
+  if(score > 6){ //This checks cloud collision at proper time
+ 		for (var iter =0; iter < clouds.length; iter++){
+  		if(Math.abs(clouds[iter].x-bezierX_Value(aX,bX,cX,clouds[iter].y/canvas.height, topNado))-clouds[iter].radius < 20){
+      	if (clouds[iter].lifetime <50 && clouds[iter].lifetime >45){
+            GameOver = true;
+        }
+    	}
+  	}
+  }
+}
+
+
+function Particle(x, y, speed, lifetime){
+	this.x = x;
+  this.y = y;
+  this.lifetime = lifetime;
+  this.radius = 6+ Math.random()*4;
+  this.speed = 1.5
+  this.speedX = 0;
+}
+
+var particles = new Array(),
+    buffer = 20;
+
+function particle_system(counter){ //designed for 1 per call max
+  	particles.push(new Particle(botNado-20 + Math.random()*10, canvas.height - buffer,1.5, lifetime));
+      particles[counter].speedX = 2;
+      if (Math.random()<.5){
+      	particles[counter].speedX = -1*particles[counter].speedX;
+      	particles[counter].x = botNado + 30 - Math.random()*20;
+    }
+}
+
+function tornadoUpdate(){
+	botNado = botNado + elasticRatio * (topNado - botNado);
+  
+	for(var iter =0; iter < particles.length; iter++){
+  	
+  	particles[iter].radius += .03;
+  	particles[iter].y = particles[iter].y - particles[iter].speed;
+    if(particles[iter].y < 0 - buffer){
+    	particles[iter].radius = 6+ Math.random()*4;
+      particles[iter].y = canvas.height - buffer;
+      particles[iter].x = botNado-20 + Math.random()*10;
+      particles[iter].speedX = 2;
+      if (Math.random()<.5){
+        particles[iter].speedX = -1*particles[iter].speedX;
+      	particles[iter].x = botNado+30 - Math.random()*20;
+      }
+    }// Above is lifetime, hits ceiling, below if far outside walls
+		if(particles[iter].x > canvas.width + 3*buffer || particles[iter].x < 0 - 3*buffer){
+    	
+    	particles[iter].radius = 6+ Math.random()*4;
+    	particles[iter].y = canvas.height - buffer;
+      particles[iter].x = botNado-30 + Math.random()*20;
+      particles[iter].speedX = 2;
+      if (Math.random()<.5){
+      	particles[iter].speedX = -1*particles[iter].speedX;
+      	particles[iter].x = botNado+30 - Math.random()*20;
+      }
+    } //Below is center seeking mechanic
+    center = bezierX_Value(aX,bX,cX,particles[iter].y/canvas.height,topNado);
+  	if(particles[iter].x < center){
+      	particles[iter].speedX = particles[iter].speedX + .001*particles[iter].y;
+      } else if (particles[iter].x > center){
+      	particles[iter].speedX = particles[iter].speedX - .001*particles[iter].y;
+      } //Below is movement update
+    particles[iter].x = particles[iter].x + particles[iter].speedX;
+	} //Below is bezier curve update
+  
+  cp1x = topNado;
+  cp2x = botNado;
+  cX = 3*(cp2x-topNado);   
+  bX = 0*(cp1x - cp2x) - cX;
+  aX = botNado - topNado - cX - bX;
+  
+  tornadoCollisionX = bezierX_Value(aX,bX,cX,380/canvas.height,topNado);
+}
+
+function valleyUpdate(){
+	if (counterValley < 0){
+  	MemoryArray[1].leftValleyTopTarget = MemoryArray[2].leftValleyTopTarget;
+    MemoryArray[1].rightValleyTopTarget = MemoryArray[2].rightValleyTopTarget;
+  	MemoryArray[2].leftValleyTopTarget = 30 + Math.random()*160;
+    MemoryArray[2].rightValleyTopTarget = 210 + Math.random()*190;
+  	
+  	leftValleyTopTarget = MemoryArray[1].leftValleyTopTarget;
+    rightValleyTopTarget = MemoryArray[1].rightValleyTopTarget;
+    counterValley = counterValleyOG;
+  } else {
+  	counterValley--;
+  }
+   leftValleyTop = leftValleyTop + valleyElasticRatio * (leftValleyTopTarget - leftValleyTop);
+  leftValleyBottom = leftValleyBottom + valleyElasticRatio * (leftValleyTop - leftValleyBottom);
+  
+   rightValleyTop = rightValleyTop + valleyElasticRatio * (rightValleyTopTarget - rightValleyTop);
+   rightValleyBottom = rightValleyBottom + valleyElasticRatio * (rightValleyTop - rightValleyBottom);
+   
+   behindLeftValleyTop = behindLeftValleyTop + valleyElasticRatio * (MemoryArray[2].leftValleyTopTarget - behindLeftValleyTop);
+   behindLeftValleyBottom = behindLeftValleyBottom + valleyElasticRatio * (behindLeftValleyTop - behindLeftValleyBottom);
+   
+   behindRightValleyTop = behindRightValleyTop + valleyElasticRatio * (MemoryArray[2].rightValleyTopTarget - behindRightValleyTop);
+   behindRightValleyBottom = behindRightValleyBottom + valleyElasticRatio * (behindRightValleyTop - behindRightValleyBottom);
+}
+
+function cloudUpdate(){
+	if (spawnClouds == true){
+    	cloudCenterX = 100+ Math.random()*200;
+      cloudCenterY = 250;
+      ignore = 299;
+      spawnClouds = false;
+    
+  }
+  for(var iter =0; iter < clouds.length; iter++){
+   		clouds[iter].lifetime--;
+      if (clouds[iter].lifetime > 0){
+        clouds[iter].radius = clouds[iter].radius +.1;
+      	clouds[iter].speed = clouds[iter].speed + cloudAccel;
+        clouds[iter].y = clouds[iter].y + clouds[iter].speed;
+      }
+      if (clouds[iter].lifetime < 30 && clouds[iter].lifetime >0){
+      	//if(clounds[iter].x //DO COLLISION HERE, HAS BUILT IN DELAY
+      }
+      if (clouds[iter].lifetime < 0){
+      	clouds[iter].speed = -2;
+      	clouds[iter].x = -100;
+        clouds[iter].cloudSpawnCounter--;
+        clouds[iter].radius = 2+ Math.random()*4;
+        if(clouds[iter].cloudSpawnCounter < 0){
+        	clouds[iter].lifetime = lifetimeOG;
+          clouds[iter].cloudSpawnCounter = cloudSpawnCounterOG;
+          clouds[iter].x = cloudCenterX-30 + Math.random()*60;
+          clouds[iter].y = cloudCenterY-10 + Math.random()*20;
+        }
+        
+      }
+  }
+	if (cloudCounter < numCloudParticles){
+  	if(cloudDelay > 0){
+    		cloudDelay--;
+    } else{
+  			cloud_particle_system(cloudCounter);
+      	cloudCounter++;
+        cloudDelay = cloudDelayOG;
+    }
+  }
+}
+
+
+function handleMouseMove(params){
+	topNado = params.clientX;
+}
+
+function bezierX_Value(a,b,c,t,x0){ //EQUATION FOR X VALUE ON CURVE
+	center = a*t*t*t + b*t*t + c*t + x0;
+  return center;
+}
+
+function bezierControlUpdate(){
+		Vcp1x = leftValleyTop;
+    Vcp2x = leftValleyBottom;
+    VcX = 1*(Vcp2x-leftValleyTop);   //adjusted to fit collision
+    VbX = 10*(Vcp1x - Vcp2x) - VcX;
+    VaX = leftValleyBottom - leftValleyTop - VcX - VbX;
+    
+    VRcp1x = rightValleyTop;
+    VRcp2x = rightValleyBottom;
+    VRcX = 0*(VRcp2x-rightValleyTop);   //adjusted to fit collision
+    VRbX = 10*(VRcp1x - VRcp2x) - VRcX;
+    VRaX = rightValleyBottom - rightValleyTop - VRcX - VRbX;
+    
+    BVcp1x = leftValleyTop;
+    BVcp2x = behindLeftValleyBottom;
+    BVcX = 3*(BVcp2x-leftValleyTop);   
+    BVbX = 0*(BVcp1x - BVcp2x) - BVcX;
+    BVaX = behindLeftValleyBottom - leftValleyTop - BVcX - BVbX;
+    
+    BVRcp1x = rightValleyTop;
+    BVRcp2x = behindRightValleyBottom;
+    BVRcX = 3*(BVRcp2x-rightValleyTop);   
+    BVRbX = 0*(BVRcp1x - BVRcp2x) - BVRcX;
+    BVRaX = behindRightValleyBottom - rightValleyTop - BVRcX - BVRbX;
+    
+    leftValleyCollisionX = bezierX_Value(VaX,VbX,VcX,60/canvas.height, leftValleyBottom);
+		rightValleyCollisionX = bezierX_Value(VRaX,VRbX,VRcX,50/canvas.height, rightValleyBottom);
+    
+    
+}
+
+canvas.addEventListener("mousemove", handleMouseMove);
+
+function update(){
+if(GameOver == false){
+	if (counter < numParticles){
+  	if(delay > 0){
+    		delay--;
+    } else{
+  			particle_system(counter);
+      	counter++;
+        delay = delayOG;
+    }
+  }
+  	collisionUpdate();
+    tornadoUpdate();
+    valleyUpdate(); //Movement of desired destination
+    bezierControlUpdate(); //implementation of desired to actual
+    cloudUpdate();
+    ignore--;
+    if (ignore < 0){
+    	spawnClouds = true;
+    }
+    
+    if(GameOver == false){
+    if(scoreTimer > 0){
+    	scoreTimer --
+    }else if (scoreTimer <=0){
+    	scoreTimer = scoreTimerOG;
+      score++;
+    }
+    }
+}else{ //GAME OVER UPDATE BELOW
+		for(var iter =0; iter < particles.length; iter++){
+    		 particles[iter].x = particles[iter].x + particles[iter].speedX;
+          particles[iter].y = particles[iter].y - particles[iter].speed;
+    }
+    valleyUpdate(); //Movement of desired destination
+    bezierControlUpdate(); //implementation of desired to actual
+    cloudUpdate();
+    ignore--;
+    if (ignore < 0){
+    	spawnClouds = true;
+    }
+    
+}
+}
+
+function draw(){
+	canvas.width = canvas.width;
+  context.fillStyle = grd1;
+  context.fillRect(0,0,400,400);
+  
+  context.fillStyle = "rgba(255, 255, 255, 0.3)";
+  for(var iter =0; iter < clouds.length; iter++){
+  	if(clouds[iter].lifetime >50){
+  	if(clouds[iter].lifetime > 0){
+    	context.beginPath();
+    	context.arc(clouds[iter].x, clouds[iter].y, clouds[iter].radius, Math.PI*2, false);
+    	context.fill();
+     } 
+     }
+  }
+
+  context.fillStyle = "#AD997E";
+  
+  context.beginPath();
+  context.moveTo(rightValleyTop,300); //Right background of valley
+  context.bezierCurveTo(BVRcp1x,BVRcp1y,BVRcp2x,BVRcp2y, behindRightValleyTop,400);
+  context.lineTo(leftValleyBottom,400);
+  context.lineTo(rightValleyTop,300);
+  context.stroke();
+  context.fill();
+
+  context.beginPath();
+  context.moveTo(leftValleyTop,300); //Left background of valley
+  context.bezierCurveTo(BVcp1x,BVcp1y,BVcp2x,BVcp2y, behindLeftValleyTop,400);
+  context.lineTo(rightValleyBottom,400);
+  context.lineTo(leftValleyTop,300);
+  context.stroke();
+  context.fill();
+  
+  context.fillStyle = "#D9C09E";
+  
+  context.beginPath(); // Ground floor of valley
+  context.moveTo(leftValleyTop,300);
+  context.lineTo(rightValleyTop,300);
+  context.bezierCurveTo(VRcp1x,VRcp1y,VRcp2x,VRcp2y, rightValleyBottom,400);
+  context.lineTo(leftValleyBottom,400);
+	context.bezierCurveTo(Vcp2x,Vcp2y,Vcp1x,Vcp1y, leftValleyTop,300);
+  context.stroke();
+  context.fill();
+  
+  
+  
+  context.fillStyle ="rgba(219,219,219,.90)";
+  
+  for(var iter =0; iter < particles.length; iter++){
+    context.beginPath();
+    context.arc(particles[iter].x, particles[iter].y, particles[iter].radius, Math.PI*2, false);
+    context.fill();
+  }
+  
+   context.fillStyle = "rgba(255, 255, 255, 0.3)";
+  for(var iter =0; iter < clouds.length; iter++){
+  	if(clouds[iter].lifetime <=50){
+  	if(clouds[iter].lifetime > 0){
+    	context.beginPath();
+    	context.arc(clouds[iter].x, clouds[iter].y, clouds[iter].radius, Math.PI*2, false);
+    	context.fill();
+      
+ 		}
+		}
+  }
+
+  if(GameOver == true){
+    context.fillStyle = "black";
+    context.font ="20px Verdana"
+  	context.fillText("You lasted " + score+ " seconds",100,220);
+  	context.font ="30px Verdana"
+  	context.fillText("GAME OVER",110,190);
+  }else {
+    context.fillStyle = "black";
+  	context.fillText("Seconds = " + score,2,395);
+  }
+  
+  
+}
+
+function game_loop(){
+	update();
+  draw();
+}
+
+setInterval(game_loop, 20);
+
+    }
+
+</script>
+
+</head>
+<body>
+    <canvas id="canvas" width='400' height='400'></canvas>
+
+  
+  <script>
+    // tell the embed parent frame the height of the content
+    if (window.parent && window.parent.parent){
+      window.parent.parent.postMessage(["resultsFrame", {
+        height: document.body.getBoundingClientRect().height,
+        slug: "rs7xkwvm"
+      }], "*")
+    }
+
+    // always overwrite window.name, in case users try to set it manually
+    window.name = "result"
+  </script>
+
+</body>
+</html>

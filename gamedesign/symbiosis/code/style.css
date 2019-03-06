@@ -1,0 +1,40 @@
+body{
+	text-align: center;
+	position: relative;
+	background-color: #efefe1;
+	color: #d3d3d3;
+
+	padding: 0px;
+	margin: 0px;
+	overflow-x: hidden;  /* disables scrolling */
+}
+
+.topnav{
+	background-color: #111111;
+	overflow: hidden;
+}
+
+.topnav button {
+	float: right;
+	background-color: inherit;
+	outline: none;
+	border: none;
+	transition: 0.2s;
+	color: #f2f2f2;
+	text-align: center;
+	font-size: 18px;
+	padding: 20px calc(8px + 2vw) 20px 14px;
+	text-decoration: none;
+}
+
+.topnav button:hover {
+	background-color: #efefe1;
+	color: #111111;
+	cursor: pointer;
+}
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+
+}
