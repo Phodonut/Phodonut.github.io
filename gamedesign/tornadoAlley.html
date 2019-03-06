@@ -28,6 +28,10 @@
       #canvas {
     border:3px solid black;
     background-color: white;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
   </style>
 
@@ -304,7 +308,7 @@ function cloudUpdate(){
 
 
 function handleMouseMove(params){
-	topNado = params.clientX;
+	topNado = params.clientX - cv.offsetLeft;
 }
 
 function bezierX_Value(a,b,c,t,x0){ //EQUATION FOR X VALUE ON CURVE
