@@ -2,6 +2,12 @@
 	background-color: #111111;
 	overflow: hidden;
 }
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
 
 .topnav button {
 	float: right;
@@ -283,6 +289,7 @@ body{
 	height: calc((100vh - 62px));   /* height taking navbar into account */
 	background-color: #efefe1;
 	width: 100%;
+	margin-top: 100px;
 }
 
 .PhotoRowDiv{
@@ -323,6 +330,7 @@ body{
 }
 
 .fullscreenDiv{
+	z-index: 2;
 	top: 5vh;
 	left: 4.5vw;
 	position:fixed;
@@ -493,7 +501,7 @@ body{
 	width: 80vw;
 	font-size: 24px;
 	text-align: center;
-	color: #111111;
+	color: #f2f2f2;
 }
 
 .gameTextTitle{
@@ -504,10 +512,32 @@ body{
 	margin-left:auto;
 	font-size: 36px;
 	text-align: center;
-	color: #111111;
+	color: #f2f2f2;
 }
 
 .previewImgGame{
 	height: 60vh;
+	margin-top: 75px;
+
+}
+
+.gamePlayButton{
+	background-color: #1f2833;
+	outline: none;
+	border: none;
+	transition: 0.2s;
+	color: #f2f2f2;
+	text-align: center;
+	font-size: 18px;
+	padding: 20px 14px 20px 14px;
+	text-decoration: none;
+	margin-top: 0px;
+
+}
+
+.gamePlayButton:hover {
+	background-color: #efefe1;
+	color: #111111;
+	cursor: pointer;
 }
 /* END GAME DESIGN SIDE */

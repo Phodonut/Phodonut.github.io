@@ -11,10 +11,15 @@ var is_fine = matchMedia('(pointer:fine)').matches;
 var is_coarse = matchMedia('(pointer:coarse)').matches;
 var globalToggle = false;
 var globalFadeCounter = 0;
+var scrollPos;
 window.onload = function(){
-	navbarSticky()
+	if(window.location.href.match('gamedesign.html')){
+		scrollFunct();
+	}
 	if (window.location.href.match('photography.html') != null) {
    			colInit();
+  	}else{
+  		navbarSticky()
   	}
   	if ((window.location.href.match('portraits.html') != null)) {
   		csvSetup(csvPortraits);
@@ -32,8 +37,14 @@ window.onload = function(){
   	}
 };
 
-window.onbeforeunload = function () {
-	window.scrollTo(0, 0);
+
+//window.onbeforeunload = function () {
+//	window.scrollTo(0, 0);
+//}
+
+function storeScrollPos(){
+	scrollPos = window.scrollY;
+	localStorage.scrollPos = scrollPos;
 }
 
 var navbar = document.getElementById("nav");
@@ -43,6 +54,7 @@ var sticky = navbar.offsetTop;
 function navbarSticky() {
 	if (window.pageYOffset >= sticky) {
 		navbar.classList.add("sticky");
+		console.log("sticky");
 	} else {
 		navbar.classList.remove("sticky");
 	}
@@ -62,6 +74,7 @@ function openHome(){
 	}else {
 		window.location.href = "./index.html";
 	}
+	localStorage.scrollPos = 0;
 }
 
 function openPhotography(){
@@ -73,11 +86,43 @@ function openPhotography(){
 
 }
 
+function scrollFunct(){
+	scrollPos = Number(localStorage.scrollPos);
+	window.scrollTo(0,scrollPos);
+}
+
 function openGameDesign(){
 	window.location.href = "../gamedesign.html";
 }
 function openGameDesignFromSym(){
 	window.location.href = "../../../gamedesign.html";
+}
+function openPlayerTornadoAlley(){
+	var w = 398;
+	var h = 386;
+	url = './tornadoAlleyPlayer.html';
+	title = 'Tornado Alley Player';
+    popupPlayer(url, title, w, h);
+}
+function openPlayerSnakeRevamped(){
+	var w = 400;
+	var h = 385;
+	url = './snakeRevampedPlayer.html';
+	title = 'Snake Revamped Player';
+    popupPlayer(url, title, w, h);
+}
+function openPlayerSymbiosis(){
+	var w = 890;
+	var h = 576;
+	url = './symbiosisPlayer.html';
+	title = 'Symbiosis Player';
+	popupPlayer(url, title, w, h);
+}
+
+function popupPlayer(url, title, w, h){
+	var y = window.top.outerHeight / 2 + window.top.screenY - ( h / 2)
+    var x = window.top.outerWidth / 2 + window.top.screenX - ( w / 2)
+    return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+y+', left='+x);
 }
 
 function scrollTop(){
@@ -780,7 +825,7 @@ function resizeImg(width, height){
 	var adjustment;
 	var maxW = (.91*browserW - .91*.15*browserW);
 
-	var maxH = (.9*browserH - .9*.1*browserH -.1); 
+	var maxH = (.9*browserH - .9*.2*browserH -.1); 
 
 	if((width <= maxW) && (height <= maxH)){ //fit to container if smaller than both
 		adjustment = (maxW - width) / width;

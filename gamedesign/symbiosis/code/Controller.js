@@ -10,7 +10,7 @@ function mouseUp(eventParams){
 
 function mouseMove(eventParams){
 	mouseX = eventParams.clientX;
-	mouseY = eventParams.clientY - 80 + window.scrollY; //added in post to work on website, original was just 'eventParams.clientY'
+	mouseY = eventParams.clientY; //added in post to work on website, original was just 'eventParams.clientY'
   console.log(window.scrollY);
 }
 
