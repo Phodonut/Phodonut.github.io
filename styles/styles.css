@@ -2,6 +2,16 @@
 	background-color: #111111;
 	overflow: hidden;
 }
+.topnav a {
+  float: none;
+  position: absolute;
+  color: #f2f2f2;
+  text-align: center;
+  font-size: 36px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .sticky {
   position: fixed;
   top: 0;
