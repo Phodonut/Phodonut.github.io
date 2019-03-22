@@ -41,7 +41,6 @@
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-
 }
 
 .subPageTitles{
@@ -528,7 +527,10 @@ body{
 .previewImgGame{
 	height: 60vh;
 	margin-top: 75px;
-
+}
+.subpagePreview{
+	height: 30vh;
+	margin-top: 75px;
 }
 
 .gamePlayButton{
@@ -549,5 +551,14 @@ body{
 	background-color: #efefe1;
 	color: #111111;
 	cursor: pointer;
+}
+
+.centerTextbox{
+	color: #f2f2f2;
+	font-size: 18px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+	width: 60vw;
 }
 /* END GAME DESIGN SIDE */
