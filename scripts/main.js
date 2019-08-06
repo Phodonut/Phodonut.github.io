@@ -64,7 +64,30 @@ function navbarSticky() {
 function openContact(){
 	hidePages();
 	scrollTop();
-	document.getElementById("Contact").style.display = "block";
+	var locArray = window.location.pathname.split('/');
+	var CurLoc = locArray[locArray.length-1];
+	//document.getElementById("Contact").style.display = "block";
+	if(CurLoc == 'gamedesign.html'){
+		if(screen.width <= screen.height){
+			window.location.href = "./gamedesign/contact.html"; // eventually do a toggle here that mimicks on hover for mobile
+		}else {
+			window.location.href = "./gamedesign/contact.html";
+		}
+
+	}else if(CurLoc == 'index.html') {
+		if(screen.width <= screen.height){
+			window.location.href = "./contact.html"; // eventually do a toggle here that mimicks on hover for mobile
+		}else {
+			window.location.href = "./contact.html";
+		}
+	}else{
+		if(screen.width <= screen.height){
+			window.location.href = "./photography/contact.html"; // eventually do a toggle here that mimicks on hover for mobile
+		}else {
+			window.location.href = "./photography/contact.html";
+		}
+	}
+	localStorage.scrollPos = 0;
 
 }
 
