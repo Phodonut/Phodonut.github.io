@@ -80,11 +80,17 @@ function openContact(){
 		}else {
 			window.location.href = "./contact.html";
 		}
-	}else{
+	}else if(CurLoc == 'photography.html'){
 		if(screen.width <= screen.height){
 			window.location.href = "./photography/contact.html"; // eventually do a toggle here that mimicks on hover for mobile
 		}else {
 			window.location.href = "./photography/contact.html";
+		}
+	}else{ //is in the sub pages of photography
+		if(screen.width <= screen.height){
+			window.location.href = "../photography/contact.html"; // eventually do a toggle here that mimicks on hover for mobile
+		}else {
+			window.location.href = "../photography/contact.html";
 		}
 	}
 	localStorage.scrollPos = 0;
