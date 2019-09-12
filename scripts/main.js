@@ -1,4 +1,4 @@
-//stringCutAmount = 20;// IF ON DESKTOP
+//stringCutAmount = 86;// IF ON DESKTOP
 stringCutAmount = 54;// IF ON BROWSER 
 
 var col1SRC = ["images/1col1.jpg", "images/2col1.jpg", "images/3col1.jpg", "images/4col1.jpg"];
@@ -859,7 +859,7 @@ function resizeImg(width, height){
 	if((width <= maxW) && (height <= maxH)){ //fit to container if smaller than both
 		adjustment = (maxW - width) / width;
 		width = (1+adjustment)*width;
-		hieght = (1+adjustment)*height;
+		height = (1+adjustment)*height;
 	}
 	if(width > maxW){
 		adjustment = (width - maxW) / width;
