@@ -47,7 +47,7 @@
 	pointer-events: none;
 	position: absolute;
 	opacity: 1;
-	width: 100%;
+	width: calc(100% - 310px );
 	top: 0px;
 	text-align: center;
 	color: #f2f2f2;
